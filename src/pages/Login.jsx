@@ -8,19 +8,48 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 
 function Login() {
-  //Falta implementar a lógica do login, aqui é apenas o layout visual.
-  //Atenção ao axios, Configs do TextField (onchange e values) e o useState
+  //   const [user, setUser] = useState({
+  //     email: "",
+  //     password: "",
+  //   });
+
+  //   const onChange = (event) => {
+  //     const { name, value } = event.target;
+  //     setUser({ ...user, [name]: value });
+  //   };
+
+  //   const handleSubmit = (event) => {
+  //     event.preventDefault();
+  //     login();
+  //   };
+
+  //   async function login() {
+  //     await api.postLogin(user).then(
+  //       (response) =>{
+  //         alert(response.data.message)
+  //       },
+  //       (error) =>{
+  //         console.log(error)
+  //         alert(error.response.data.error)
+  //       }
+  //     )
+  //   }
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box display="flex" flexDirection="column" alignItems="center">
-
         <Typography component="h1" variant="h5">
-          PROJETO BASE - Login
+          LOGIN
         </Typography>
 
-        <Box component="form" onSubmit={() => {console.log('Ainda não faz nada')}} noValidate>
+        <Box
+          component="form"
+          onSubmit={() => {
+            console.log("Ainda não faz nada");
+          }}
+          noValidate
+        >
           <TextField
             margin="normal"
             required
@@ -40,10 +69,18 @@ function Login() {
             id="password"
             autoComplete="current-password"
           />
-          <Button type="submit" fullWidth variant="contained">
-            Login
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ backgroundColor: "red" }}
+          >
+            <Link to="/salas">Login</Link>
           </Button>
-          <Button fullWidth variant="contained">
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ backgroundColor: "red" }}
+          >
             <Link to="/cadastro">Cadastro</Link>
           </Button>
         </Box>

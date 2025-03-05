@@ -8,16 +8,14 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 
 function Cadastro() {
-  //Falta implementar a lógica do cadastro, aqui é apenas o layout visual
-  //Atenção ao axios, Configs do TextField (onchange e values) e o useState
+  
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box display="flex" flexDirection="column" alignItems="center">
-
         <Typography component="h1" variant="h5">
-        PROJETO BASE - Cadastro
+          CADASTRE-SE
         </Typography>
 
         <Box component="form" noValidate>
@@ -50,10 +48,19 @@ function Cadastro() {
             type="password"
           />
 
-          <Button type="submit" fullWidth variant="contained">
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            style={{ backgroundColor: "red", color: "white" }}
+          >
             Cadastrar
           </Button>
-          <Button fullWidth variant="contained">
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ backgroundColor: "red" }}
+          >
             <Link to="/">Já tem uma conta? Faça login</Link>
           </Button>
         </Box>
