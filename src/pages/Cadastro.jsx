@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,7 +8,33 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 
 function Cadastro() {
-  
+  const [user, setUser] = useState({
+    cpf: "",
+    email: "",
+    password: "",
+    name: "",
+    data_nascimento: "",
+  });
+
+  const onChange = (event) => {
+    const { name, value } = event.target;
+    setUser({ ...user, [name]: value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    cadastro();
+  };
+
+  async function cadastro() {
+    try {
+      const response = await api.postCadastro(user);
+      alert(response.data.message);
+    } catch (error) {
+      console.log(error);
+      alert(error.response?.data?.error || "Erro desconhecido");
+    }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -18,13 +44,16 @@ function Cadastro() {
           CADASTRE-SE
         </Typography>
 
-        <Box component="form" noValidate>
+        <Box component="form" onSubmit={handleSubmit} noValidate>
           <TextField
             margin="normal"
             required
             fullWidth
             label="Nome"
             type="text"
+            name="name"
+            value={user.name}
+            onChange={onChange}
           />
           <TextField
             margin="normal"
@@ -32,6 +61,9 @@ function Cadastro() {
             fullWidth
             label="CPF"
             type="number"
+            name="cpf"
+            value={user.cpf}
+            onChange={onChange}
           />
           <TextField
             margin="normal"
@@ -39,6 +71,9 @@ function Cadastro() {
             fullWidth
             label="E-mail"
             type="email"
+            name="email"
+            value={user.email}
+            onChange={onChange}
           />
           <TextField
             margin="normal"
@@ -46,6 +81,9 @@ function Cadastro() {
             fullWidth
             label="Senha"
             type="password"
+            name="password"
+            value={user.password}
+            onChange={onChange}
           />
 
           <Button
@@ -56,12 +94,15 @@ function Cadastro() {
           >
             Cadastrar
           </Button>
+
           <Button
+            component={Link}
+            to="/"
             fullWidth
             variant="contained"
             style={{ backgroundColor: "red" }}
           >
-            <Link to="/">Já tem uma conta? Faça login</Link>
+            Já tem uma conta? Faça login
           </Button>
         </Box>
       </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,32 +8,30 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 
 function Login() {
-  //   const [user, setUser] = useState({
-  //     email: "",
-  //     password: "",
-  //   });
+  const [user, setUser] = useState({
+    cpf: "",
+    password: "",
+  });
 
-  //   const onChange = (event) => {
-  //     const { name, value } = event.target;
-  //     setUser({ ...user, [name]: value });
-  //   };
+  const onChange = (event) => {
+    const { name, value } = event.target;
+    setUser({ ...user, [name]: value });
+  };
 
-  //   const handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     login();
-  //   };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    login();
+  };
 
-  //   async function login() {
-  //     await api.postLogin(user).then(
-  //       (response) =>{
-  //         alert(response.data.message)
-  //       },
-  //       (error) =>{
-  //         console.log(error)
-  //         alert(error.response.data.error)
-  //       }
-  //     )
-  //   }
+  async function login() {
+    try {
+      const response = await api.postLogin(user);
+      alert(response.data.message);
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.error || "Erro desconhecido");
+    }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -43,13 +41,7 @@ function Login() {
           LOGIN
         </Typography>
 
-        <Box
-          component="form"
-          onSubmit={() => {
-            console.log("Ainda não faz nada");
-          }}
-          noValidate
-        >
+        <Box component="form" onSubmit={handleSubmit} noValidate>
           <TextField
             margin="normal"
             required
@@ -58,6 +50,8 @@ function Login() {
             type="number"
             name="cpf"
             id="cpf"
+            value={user.cpf}
+            onChange={onChange}
           />
           <TextField
             margin="normal"
@@ -68,20 +62,26 @@ function Login() {
             name="password"
             id="password"
             autoComplete="current-password"
+            value={user.password}
+            onChange={onChange}
           />
           <Button
+            component={Link}
+            to="/salas"
             fullWidth
             variant="contained"
             style={{ backgroundColor: "red" }}
           >
-            <Link to="/salas">Login</Link>
+            Login
           </Button>
           <Button
+            component={Link}
+            to="/cadastro"
             fullWidth
             variant="contained"
             style={{ backgroundColor: "red" }}
           >
-            <Link to="/cadastro">Cadastro</Link>
+            Cadastro
           </Button>
         </Box>
       </Box>
