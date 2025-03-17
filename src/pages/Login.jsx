@@ -29,7 +29,7 @@ function Login() {
       const response = await api.postLogin(user);
       alert(response.data.message);
     } catch (error) {
-      console.error(err);
+      console.error(error);
       alert(error.response?.data?.error || "Erro desconhecido");
     }
   }
@@ -101,6 +101,7 @@ function Login() {
                 marginTop: 10,
               }}
             >
+               <Link to="/salas"></Link>
               ENTRAR
             </Button>
 
