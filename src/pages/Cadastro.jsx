@@ -6,14 +6,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
+import api from "../axios/axios";
 
 function Cadastro() {
   const [user, setUser] = useState({
+    name: "",
     cpf: "",
     email: "",
-    password: "",
-    name: "",
-    data_nascimento: "",
+    password: ""
   });
 
   const onChange = (event) => {
@@ -28,85 +28,100 @@ function Cadastro() {
 
   async function cadastro() {
     try {
-      const response = await api.postCadastro(user);
+      const response = await api.post(user);
       alert(response.data.message);
     } catch (error) {
       console.log(error);
-      alert(error.response?.data?.error || "Erro desconhecido");
+      alert(error.response.data.error || "Erro desconhecido");
     }
   }
 
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography component="h1" variant="h5">
-          CADASTRE-SE
-        </Typography>
+    <div style={{
+      backgroundImage:"url('/Imagem_de_fundo.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      height: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }}>
+      <Container component="main" maxWidth="xs" style={{ backgroundColor: "white", borderRadius: 20, padding: 20, boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}>
+        <CssBaseline />
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Typography component="h1" variant="h5" style={{ color: "#d40000", fontWeight: "bold", marginBottom: 10 }}>
+            CRIE SUA CONTA
+          </Typography>
 
-        <Box component="form" onSubmit={handleSubmit} noValidate>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Nome"
-            type="text"
-            name="name"
-            value={user.name}
-            onChange={onChange}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="CPF"
-            type="number"
-            name="cpf"
-            value={user.cpf}
-            onChange={onChange}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="E-mail"
-            type="email"
-            name="email"
-            value={user.email}
-            onChange={onChange}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Senha"
-            type="password"
-            name="password"
-            value={user.password}
-            onChange={onChange}
-          />
+          <Box component="form" onSubmit={handleSubmit} noValidate>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Nome"
+              type="text"
+              name="name"
+              value={user.name}
+              onChange={onChange}
+              style={{ backgroundColor: "#f9f9f9", borderRadius: 5 }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="CPF"
+              type="text"
+              name="cpf"
+              value={user.cpf}
+              onChange={onChange}
+              style={{ backgroundColor: "#f9f9f9", borderRadius: 5 }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="E-mail"
+              type="email"
+              name="email"
+              value={user.email}
+              onChange={onChange}
+              style={{ backgroundColor: "#f9f9f9", borderRadius: 5 }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Senha"
+              type="password"
+              name="password"
+              value={user.password}
+              onChange={onChange}
+              style={{ backgroundColor: "#f9f9f9", borderRadius: 5 }}
+            />
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            style={{ backgroundColor: "red", color: "white" }}
-          >
-            Cadastrar
-          </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              style={{ backgroundColor: "#d40000", color: "white", fontWeight: "bold", marginTop: 10 }}
+            >
+              Cadastrar
+            </Button>
 
-          <Button
-            component={Link}
-            to="/"
-            fullWidth
-            variant="contained"
-            style={{ backgroundColor: "red" }}
-          >
-            Já tem uma conta? Faça login
-          </Button>
+            <Button
+              component={Link}
+              to="/"
+              fullWidth
+              variant="contained"
+              style={{ backgroundColor: "#d40000", color: "white", fontWeight: "bold", marginTop: 10 }}
+            >
+              Já tem uma conta? Faça login
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </div>
   );
 }
 

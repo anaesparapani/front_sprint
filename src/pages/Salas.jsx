@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 // Imports para criação de tabela
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
-// TableHead é onde colocamos os títulos
 import TableHead from "@mui/material/TableHead";
-// TableBody é onde colocamos o conteúdo
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
@@ -29,12 +27,12 @@ function ListSalas() {
 
   const listSalas = salas.map((sala, index) => {
     // Adicionando a alternância de cor de fundo para as linhas
-    const backgroundColor = index % 2 === 0 ? "#FFFFFF" : "#FA8887"; // Branco para linhas pares, vermelho claro para ímpares
+    const backgroundColor = index % 2 === 0 ? "#FFD9D9" : "#FFFFFF"; // Rosa claro para linhas pares
     return (
       <TableRow key={sala.id_sala} sx={{ backgroundColor }}>
-        <TableCell sx={{ textAlign: "center", padding: "16px" }}>{sala.number}</TableCell>
-        <TableCell sx={{ textAlign: "center", padding: "16px" }}>{sala.description}</TableCell>
-        <TableCell sx={{ textAlign: "center", padding: "16px" }}>{sala.capacity}</TableCell>
+        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: 'bold' }}>{sala.number}</TableCell>
+        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: 'bold' }}>{sala.description}</TableCell>
+        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: 'bold' }}>{sala.capacity}</TableCell>
       </TableRow>
     );
   });
@@ -45,19 +43,18 @@ function ListSalas() {
 
   return (
     <div>
-      <h2 style={{ textAlign: "center", marginBottom: "16px", color: "#FF0000", fontFamily: 'sans-serif', fontWeight: 'bold'}}>
-        SALAS DE AULA
+      <h2 style={{ textAlign: "center", marginBottom: "16px", color: "#B22222", fontFamily: 'sans-serif', fontWeight: 'bold', fontSize: '36px' }}>
+        Salas de Aula
       </h2>
-      <TableContainer component={Paper} sx={{ marginTop: 4, borderRadius: 2, boxShadow: 3 }}>
+      <TableContainer component={Paper} sx={{ marginTop: 4, borderRadius: 2, boxShadow: 3, backgroundColor: "#FFCCCB" }}>
         <Table sx={{ minWidth: 650 }}>
-          <TableHead sx={{ backgroundColor: "#f44336", color: "#fff", fontWeight: "bold" }}>
+          <TableHead sx={{ backgroundColor: "#ff6347", color: "#fff", fontWeight: "bold" }}>
             <TableRow>
-              <TableCell sx={{ textAlign: "center", padding: "16px" }}>Número</TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "16px" }}>Descrição</TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "16px" }}>Capacidade</TableCell>
+              <TableCell sx={{ textAlign: "center", padding: "16px", fontSize: '18px' }}>Número</TableCell>
+              <TableCell sx={{ textAlign: "center", padding: "16px", fontSize: '18px' }}>Descrição</TableCell>
+              <TableCell sx={{ textAlign: "center", padding: "16px", fontSize: '18px' }}>Capacidade</TableCell>
             </TableRow>
           </TableHead>
-
           <TableBody>{listSalas}</TableBody>
         </Table>
       </TableContainer>
