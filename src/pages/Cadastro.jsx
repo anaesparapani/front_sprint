@@ -28,11 +28,12 @@ function Cadastro() {
 
   async function cadastro() {
     try {
-      const response = await api.post(user);
+      const response = await api.postCadastro(user);
+      console.log(response);
       alert(response.data.message);
     } catch (error) {
       console.log(error);
-      alert(error.response.data.error || "Erro desconhecido");
+      alert(error.response.data.error);
     }
   }
 

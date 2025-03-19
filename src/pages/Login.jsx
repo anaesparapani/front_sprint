@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -14,6 +14,8 @@ function Login() {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const onChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
@@ -27,10 +29,11 @@ function Login() {
   async function login() {
     try {
       const response = await api.postLogin(user);
-      alert(response.data.message);
+      alert(response.data.message)
+      navigate("/salas");
     } catch (error) {
-      console.error(error);
-      alert(error.response?.data?.error || "Erro desconhecido");
+      console.log(error);
+      alert(error.response.data.error);
     }
   }
 
@@ -101,7 +104,6 @@ function Login() {
                 marginTop: 10,
               }}
             >
-               <Link to="/salas"></Link>
               ENTRAR
             </Button>
 
