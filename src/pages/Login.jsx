@@ -30,6 +30,8 @@ function Login() {
     try {
       const response = await api.postLogin(user);
       alert(response.data.message)
+      localStorage.setItem('authenticated',true) //salva localmente que este usuário já esta autenticado
+      
       navigate("/salas");
     } catch (error) {
       console.log(error);
@@ -49,6 +51,17 @@ function Login() {
         justifyContent: "center",
       }}
     >
+      <img
+        src="/logo-senai-1.png" // Altere o caminho da imagem conforme necessário
+        alt="Imagem no topo"
+        style={{
+          position: "absolute",
+          top: "2%", // Ajuste a posição vertical conforme necessário
+          left: "42%",
+          width: "15%", // Ajuste o tamanho da imagem conforme necessário
+          zIndex: 1, // Garante que a imagem fique acima do conteúdo
+        }}
+      />
       <Container
         component="main"
         maxWidth="xs"
@@ -116,6 +129,7 @@ function Login() {
                 backgroundColor: "#d40000",
                 color: "white",
                 fontWeight: "bold",
+                alignItems: 'center',
                 marginTop: 10,
               }}
             >

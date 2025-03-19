@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import api from "../axios/axios";
 
+
 function Cadastro() {
   const [user, setUser] = useState({
     name: "",
@@ -37,7 +38,6 @@ function Cadastro() {
     }
   }
 
-
   return (
     <div style={{
       backgroundImage:"url('/Imagem_de_fundo.jpg')",
@@ -48,7 +48,19 @@ function Cadastro() {
       alignItems: "center",
       justifyContent: "center"
     }}>
-      <Container component="main" maxWidth="xs" style={{ backgroundColor: "white", borderRadius: 20, padding: 20, boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}>
+      <img
+        src="/logo-senai-1.png" // Altere o caminho da imagem conforme necessário
+        alt="Imagem no topo"
+        style={{
+          position: "absolute",
+          top: "-7%", // Ajuste a posição vertical conforme necessário
+          left: "42%",
+          width: "15%", // Ajuste o tamanho da imagem conforme necessário
+          zIndex: 1, // Garante que a imagem fique acima do conteúdo
+        }}
+      />
+
+      <Container component="main" maxWidth="xs" style={{ backgroundColor: "white", borderRadius: 20, padding: 10, boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}>
         <CssBaseline />
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography component="h1" variant="h5" style={{ color: "#d40000", fontWeight: "bold", marginBottom: 10 }}>

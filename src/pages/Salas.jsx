@@ -8,9 +8,11 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Paper from "@mui/material/Paper";
 import api from "../axios/axios";
+import { useNavigate } from "react-router-dom";
 
 function ListSalas() {
   const [salas, setSalas] = useState([]);
+  const navigate = useNavigate();
 
   async function getSalas() {
     // Chamada da API
@@ -30,12 +32,29 @@ function ListSalas() {
     const backgroundColor = index % 2 === 0 ? "#FFD9D9" : "#FFFFFF"; // Rosa claro para linhas pares
     return (
       <TableRow key={sala.id_sala} sx={{ backgroundColor }}>
-        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: 'bold' }}>{sala.number}</TableCell>
-        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: 'bold' }}>{sala.description}</TableCell>
-        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: 'bold' }}>{sala.capacity}</TableCell>
+        <TableCell
+          sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
+        >
+          {sala.number}
+        </TableCell>
+        <TableCell
+          sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
+        >
+          {sala.description}
+        </TableCell>
+        <TableCell
+          sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
+        >
+          {sala.capacity}
+        </TableCell>
       </TableRow>
     );
   });
+
+  function logout() {
+    localStorage.removeItem("authenticated");
+    navigate("/");
+  }
 
   useEffect(() => {
     getSalas();
@@ -43,21 +62,78 @@ function ListSalas() {
 
   return (
     <div>
-      <h2 style={{ textAlign: "center", marginBottom: "16px", color: "#B22222", fontFamily: 'sans-serif', fontWeight: 'bold', fontSize: '36px' }}>
-        Salas de Aula
-      </h2>
-      <TableContainer component={Paper} sx={{ marginTop: 4, borderRadius: 2, boxShadow: 3, backgroundColor: "#FFCCCB" }}>
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead sx={{ backgroundColor: "#ff6347", color: "#fff", fontWeight: "bold" }}>
-            <TableRow>
-              <TableCell sx={{ textAlign: "center", padding: "16px", fontSize: '18px' }}>Número</TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "16px", fontSize: '18px' }}>Descrição</TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "16px", fontSize: '18px' }}>Capacidade</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{listSalas}</TableBody>
-        </Table>
-      </TableContainer>
+      {salas.length === 0 ? ( //? = após a '?' é true
+        <p>Carregando salas</p>
+      ) : (
+        //após os ':' é false
+        <div>
+          <h2
+            style={{
+              textAlign: "center",
+              marginBottom: "16px",
+              color: "#B22222",
+              fontFamily: "sans-serif",
+              fontWeight: "bold",
+              fontSize: "36px",
+            }}
+          >
+            Salas de Aula
+          </h2>
+          <TableContainer
+            component={Paper}
+            sx={{
+              marginTop: 4,
+              borderRadius: 2,
+              boxShadow: 3,
+              backgroundColor: "#FFCCCB",
+            }}
+          >
+            <Table sx={{ minWidth: 650 }}>
+              <TableHead
+                sx={{
+                  backgroundColor: "#ff6347",
+                  color: "#fff",
+                  fontWeight: "bold",
+                }}
+              >
+                <TableRow>
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      padding: "16px",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Número
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      padding: "16px",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Descrição
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      padding: "16px",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Capacidade
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>{listSalas}</TableBody>
+            </Table>
+          </TableContainer>
+          <Button fullWidth variant="contained" onClick={logout}>
+            SAIR
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
