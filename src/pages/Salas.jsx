@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// Imports para criação de tabela
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";

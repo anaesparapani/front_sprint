@@ -52,14 +52,14 @@ function Login() {
       }}
     >
       <img
-        src="/logo-senai-1.png" // Altere o caminho da imagem conforme necessário
+        src="/logo-senai-1.png" 
         alt="Imagem no topo"
         style={{
           position: "absolute",
-          top: "2%", // Ajuste a posição vertical conforme necessário
+          top: "2%", 
           left: "42%",
-          width: "15%", // Ajuste o tamanho da imagem conforme necessário
-          zIndex: 1, // Garante que a imagem fique acima do conteúdo
+          width: "15%", 
+          zIndex: 1, 
         }}
       />
       <Container

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -8,14 +8,15 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import api from "../axios/axios";
 
-
 function Cadastro() {
   const [user, setUser] = useState({
     name: "",
     cpf: "",
     email: "",
-    password: ""
+    password: "",
   });
+
+  const navigate = useNavigate();
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -32,6 +33,8 @@ function Cadastro() {
       const response = await api.postCadastro(user);
       console.log(response);
       alert(response.data.message);
+      
+      navigate("/");
     } catch (error) {
       console.log(error);
       alert(error.response.data.error);
@@ -39,15 +42,17 @@ function Cadastro() {
   }
 
   return (
-    <div style={{
-      backgroundImage:"url('/Imagem_de_fundo.jpg')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      height: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
-    }}>
+    <div
+      style={{
+        backgroundImage: "url('/Imagem_de_fundo.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <img
         src="/logo-senai-1.png" // Altere o caminho da imagem conforme necessário
         alt="Imagem no topo"
@@ -60,10 +65,23 @@ function Cadastro() {
         }}
       />
 
-      <Container component="main" maxWidth="xs" style={{ backgroundColor: "white", borderRadius: 20, padding: 10, boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}>
+      <Container
+        component="main"
+        maxWidth="xs"
+        style={{
+          backgroundColor: "white",
+          borderRadius: 20,
+          padding: 10,
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+        }}
+      >
         <CssBaseline />
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Typography component="h1" variant="h5" style={{ color: "#d40000", fontWeight: "bold", marginBottom: 10 }}>
+          <Typography
+            component="h1"
+            variant="h5"
+            style={{ color: "#d40000", fontWeight: "bold", marginBottom: 10 }}
+          >
             CRIE SUA CONTA
           </Typography>
 
@@ -117,20 +135,21 @@ function Cadastro() {
               type="submit"
               fullWidth
               variant="contained"
-              style={{ backgroundColor: "#d40000", color: "white", fontWeight: "bold", marginTop: 10 }}
+              style={{
+                backgroundColor: "#d40000",
+                color: "white",
+                fontWeight: "bold",
+                marginTop: 10,
+              }}
             >
               Cadastrar
             </Button>
 
-            <Button
-              component={Link}
-              to="/"
-              fullWidth
-              variant="contained"
-              style={{ backgroundColor: "#d40000", color: "white", fontWeight: "bold", marginTop: 10 }}
-            >
-              Já tem uma conta? Faça login
-            </Button>
+            <div fullWidth variant="contained" style={{ textAlign: "center" }}>
+              <Link to="/" style={{ color: "red", textDecoration: "none" }}> {/*Remove qualquer decoração de texto, como sublinhado*/}
+                JÁ TEM UMA CONTA? FAÇA LOGIN
+              </Link>
+            </div>
           </Box>
         </Box>
       </Container>
