@@ -50,11 +50,6 @@ function ListSalas() {
     );
   });
 
-  function logout() {
-    localStorage.removeItem("authenticated");
-    navigate("/");
-  }
-
   useEffect(() => {
     getSalas();
   }, []);
@@ -128,9 +123,6 @@ function ListSalas() {
               <TableBody>{listSalas}</TableBody>
             </Table>
           </TableContainer>
-          <Button fullWidth variant="contained" onClick={logout}>
-            SAIR
-          </Button>
         </div>
       )}
     </div>
