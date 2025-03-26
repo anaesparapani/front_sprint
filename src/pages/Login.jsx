@@ -40,6 +40,7 @@ function Login() {
   }
 
   return (
+    //estlização da imagem de fundo
     <div
       style={{
         backgroundImage: "url('/Imagem_de_fundo.jpg')",
@@ -51,15 +52,16 @@ function Login() {
         justifyContent: "center",
       }}
     >
+      {/*estilização da logo*/}
       <img
         src="/logo-senai-1.png" 
         alt="Imagem no topo"
         style={{
           position: "absolute",
-          top: "2%", 
+          top: "2%", // posição vertical 
           left: "42%",
           width: "15%", 
-          zIndex: 1, 
+          zIndex: 1, // para a imagem ficar acima do conteúdo
         }}
       />
       <Container
@@ -69,10 +71,13 @@ function Login() {
           backgroundColor: "white",
           borderRadius: 20,
           padding: 20,
-          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)", //sombra ao redor do elemento
         }}
       >
+        {/*evita que os navegadores façam ajustes próprios no estilo padrão*/}
         <CssBaseline />
+        
+        {/*estilização da box de login*/}
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography
             component="h1"
@@ -82,6 +87,7 @@ function Login() {
             LOGIN
           </Typography>
 
+          {/*estilização do formulario*/}
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <TextField
               margin="normal"

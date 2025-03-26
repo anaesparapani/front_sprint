@@ -7,11 +7,9 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Paper from "@mui/material/Paper";
 import api from "../axios/axios";
-import { useNavigate } from "react-router-dom";
 
 function ListSalas() {
   const [salas, setSalas] = useState([]);
-  const navigate = useNavigate();
 
   async function getSalas() {
     // Chamada da API
@@ -27,10 +25,11 @@ function ListSalas() {
   }
 
   const listSalas = salas.map((sala, index) => {
-    // Adicionando a alternância de cor de fundo para as linhas
-    const backgroundColor = index % 2 === 0 ? "#FFD9D9" : "#FFFFFF"; // Rosa claro para linhas pares
+    //alternância de cor de fundo para as linhas
+    const backgroundColor = index % 2 === 0 ? "#FFD9D9" : "#FFFFFF"; // se a linha for par será rosa claro, se for impar - branco
     return (
-      <TableRow key={sala.id_sala} sx={{ backgroundColor }}>
+      //para garantir que cada linha seja única e tenha uma chave identificadora
+      <TableRow key={sala.id_sala} sx={{ backgroundColor }}> 
         <TableCell
           sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
         >
@@ -50,6 +49,7 @@ function ListSalas() {
     );
   });
 
+  {/*faz a requisição para a API*/}
   useEffect(() => {
     getSalas();
   }, []);
@@ -83,6 +83,7 @@ function ListSalas() {
             }}
           >
             <Table sx={{ minWidth: 650 }}>
+              {/*estilização do cabeçalho */}
               <TableHead
                 sx={{
                   backgroundColor: "#ff6347",

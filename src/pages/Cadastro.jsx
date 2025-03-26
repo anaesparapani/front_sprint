@@ -42,6 +42,7 @@ function Cadastro() {
   }
 
   return (
+    //estlização da imagem de fundo
     <div
       style={{
         backgroundImage: "url('/Imagem_de_fundo.jpg')",
@@ -53,15 +54,16 @@ function Cadastro() {
         justifyContent: "center",
       }}
     >
+      {/*estilização da logo*/}
       <img
-        src="/logo-senai-1.png" // Altere o caminho da imagem conforme necessário
+        src="/logo-senai-1.png" 
         alt="Imagem no topo"
         style={{
           position: "absolute",
-          top: "-7%", // Ajuste a posição vertical conforme necessário
+          top: "-7%", // posição vertical 
           left: "42%",
-          width: "15%", // Ajuste o tamanho da imagem conforme necessário
-          zIndex: 1, // Garante que a imagem fique acima do conteúdo
+          width: "15%", 
+          zIndex: 1, // para a imagem ficar acima do conteúdo
         }}
       />
 
@@ -72,10 +74,13 @@ function Cadastro() {
           backgroundColor: "white",
           borderRadius: 20,
           padding: 10,
-          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)", //sombra ao redor do elemento
         }}
       >
+        {/*evita que os navegadores façam ajustes próprios no estilo padrão*/}
         <CssBaseline />
+
+        {/*estilização da box de cadastro*/}
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography
             component="h1"
@@ -85,6 +90,7 @@ function Cadastro() {
             CRIE SUA CONTA
           </Typography>
 
+          {/*estilização do formulario*/}
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <TextField
               margin="normal"
