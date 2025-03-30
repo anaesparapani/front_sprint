@@ -18,6 +18,7 @@ function Cadastro() {
 
   const navigate = useNavigate();
 
+  //atualizar o estado de um objeto
   const onChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
@@ -34,7 +35,7 @@ function Cadastro() {
       console.log(response);
       alert(response.data.message);
       
-      navigate("/");
+      navigate("/"); //cadastro bem sucedido, navega para login
     } catch (error) {
       console.log(error);
       alert(error.response.data.error);
@@ -73,7 +74,7 @@ function Cadastro() {
         style={{
           backgroundColor: "white",
           borderRadius: 20,
-          padding: 10,
+          padding: 10, //espaçamento interno
           boxShadow: "0 4px 8px rgba(0,0,0,0.2)", //sombra ao redor do elemento
         }}
       >
@@ -83,8 +84,8 @@ function Cadastro() {
         {/*estilização da box de cadastro*/}
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography
-            component="h1"
-            variant="h5"
+            component="h1" //renderizado como uma tag h1
+            variant="h5" //estilo da atg h5
             style={{ color: "#d40000", fontWeight: "bold", marginBottom: 10 }}
           >
             CRIE SUA CONTA
@@ -100,7 +101,7 @@ function Cadastro() {
               type="text"
               name="name"
               value={user.name}
-              onChange={onChange}
+              onChange={onChange} //detectar mudanças
               style={{ backgroundColor: "#f9f9f9", borderRadius: 5 }}
             />
             <TextField

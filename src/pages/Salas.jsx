@@ -73,7 +73,7 @@ function ListSalas() {
           >
             Salas de Aula
           </h2>
-          <TableContainer
+          <TableContainer //cria uma tabela
             component={Paper}
             sx={{
               marginTop: 4,

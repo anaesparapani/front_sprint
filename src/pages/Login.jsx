@@ -16,6 +16,7 @@ function Login() {
 
   const navigate = useNavigate();
 
+  //atualizar o estado de um objeto
   const onChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
@@ -32,7 +33,7 @@ function Login() {
       alert(response.data.message)
       localStorage.setItem('authenticated',true) //salva localmente que este usuário já esta autenticado
       
-      navigate("/salas");
+      navigate("/salas"); //login bem sucedido, navega para salas
     } catch (error) {
       console.log(error);
       alert(error.response.data.error);
@@ -60,7 +61,7 @@ function Login() {
           position: "absolute",
           top: "2%", // posição vertical 
           left: "42%",
-          width: "15%", 
+          width: "15%", //largura
           zIndex: 1, // para a imagem ficar acima do conteúdo
         }}
       />
@@ -70,7 +71,7 @@ function Login() {
         style={{
           backgroundColor: "white",
           borderRadius: 20,
-          padding: 20,
+          padding: 20, //espaçamento interno
           boxShadow: "0 4px 8px rgba(0,0,0,0.2)", //sombra ao redor do elemento
         }}
       >
@@ -80,8 +81,8 @@ function Login() {
         {/*estilização da box de login*/}
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography
-            component="h1"
-            variant="h5"
+            component="h1" //renderizado como uma tag h1
+            variant="h5" //estilo da atg h5
             style={{ color: "#d40000", fontWeight: "bold", marginBottom: 10 }}
           >
             LOGIN
@@ -97,7 +98,7 @@ function Login() {
               type="text"
               name="cpf"
               value={user.cpf}
-              onChange={onChange}
+              onChange={onChange} //detectar mudanças
               style={{ backgroundColor: "#f9f9f9", borderRadius: 5 }}
             />
             <TextField

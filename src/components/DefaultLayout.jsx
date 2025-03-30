@@ -17,7 +17,7 @@ const DefaultLayout = ({ children }) => {
           padding: "30px",
         }}
       >
-        {children}
+        {children} {/*conteúdo da página protegida*/}
       </Box>
 
       <Footer />
