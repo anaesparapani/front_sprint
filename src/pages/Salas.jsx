@@ -7,9 +7,12 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Paper from "@mui/material/Paper";
 import api from "../axios/axios";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 function ListSalas() {
   const [salas, setSalas] = useState([]);
+  const navigate = useNavigate();
 
   async function getSalas() {
     // Chamada da API
@@ -29,7 +32,7 @@ function ListSalas() {
     const backgroundColor = index % 2 === 0 ? "#FFD9D9" : "#FFFFFF"; // se a linha for par será rosa claro, se for impar - branco
     return (
       //para garantir que cada linha seja única e tenha uma chave identificadora
-      <TableRow key={sala.id_sala} sx={{ backgroundColor }}> 
+      <TableRow key={sala.id_sala} sx={{ backgroundColor }}>
         <TableCell
           sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
         >
@@ -49,7 +52,14 @@ function ListSalas() {
     );
   });
 
-  {/*faz a requisição para a API*/}
+  function logout() {
+    localStorage.removeItem("authenticated");
+    navigate("/");
+  }
+
+  {
+    /*faz a requisição para a API*/
+  }
   useEffect(() => {
     getSalas();
   }, []);
@@ -124,6 +134,19 @@ function ListSalas() {
               <TableBody>{listSalas}</TableBody>
             </Table>
           </TableContainer>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={logout}
+            style={{
+              backgroundColor: "#d40000",
+              color: "white",
+              fontWeight: "bold",
+              marginTop: 10,
+            }}
+          >
+            SAIR
+          </Button>
         </div>
       )}
     </div>
