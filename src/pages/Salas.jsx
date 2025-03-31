@@ -33,17 +33,17 @@ function ListSalas() {
     return (
       //para garantir que cada linha seja única e tenha uma chave identificadora
       <TableRow key={sala.id_sala} sx={{ backgroundColor }}>
-        <TableCell
+        <TableCell //célula do número da sala
           sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
         >
           {sala.number}
         </TableCell>
-        <TableCell
+        <TableCell //célula da descrição
           sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
         >
           {sala.description}
         </TableCell>
-        <TableCell
+        <TableCell //célula da capacidade
           sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
         >
           {sala.capacity}
@@ -52,14 +52,12 @@ function ListSalas() {
     );
   });
 
-  function logout() {
-    localStorage.removeItem("authenticated");
-    navigate("/");
+  function logout() { //função para o usuario deslogar
+    localStorage.removeItem("authenticated"); //remove a autenticação
+    navigate("/"); //navega para login
   }
 
-  {
-    /*faz a requisição para a API*/
-  }
+  {/*faz a requisição para a API*/}
   useEffect(() => {
     getSalas();
   }, []);
@@ -71,7 +69,7 @@ function ListSalas() {
       ) : (
         //após os ':' é false
         <div>
-          <h2
+          <h2 //estilização titulo
             style={{
               textAlign: "center",
               marginBottom: "16px",
@@ -101,8 +99,9 @@ function ListSalas() {
                   fontWeight: "bold",
                 }}
               >
+                {/*definir as linhas da tabela*/}
                 <TableRow>
-                  <TableCell
+                  <TableCell //célula (número)
                     sx={{
                       textAlign: "center",
                       padding: "16px",
@@ -111,7 +110,7 @@ function ListSalas() {
                   >
                     Número
                   </TableCell>
-                  <TableCell
+                  <TableCell //célula (descrição)
                     sx={{
                       textAlign: "center",
                       padding: "16px",
@@ -120,7 +119,7 @@ function ListSalas() {
                   >
                     Descrição
                   </TableCell>
-                  <TableCell
+                  <TableCell //célula (capacidade)
                     sx={{
                       textAlign: "center",
                       padding: "16px",
@@ -131,10 +130,10 @@ function ListSalas() {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{listSalas}</TableBody>
+              <TableBody>{listSalas}</TableBody> {/*mostra o contúdo da tabela*/}
             </Table>
           </TableContainer>
-          <Button
+          <Button //estilização botão sair - logout
             fullWidth
             variant="contained"
             onClick={logout}

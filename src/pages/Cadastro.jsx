@@ -18,7 +18,7 @@ function Cadastro() {
 
   const navigate = useNavigate();
 
-  //atualizar o estado de um objeto
+  //atualizar o estado de um objeto (captura as mudanças)
   const onChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });

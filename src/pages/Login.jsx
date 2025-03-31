@@ -16,14 +16,14 @@ function Login() {
 
   const navigate = useNavigate();
 
-  //atualizar o estado de um objeto
+  //atualiza o estado de um objeto (captura as mudanças)
   const onChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (event) => { //processa os dados inseridos
+    event.preventDefault(); //previne que a página não recarregue
     login();
   };
 
