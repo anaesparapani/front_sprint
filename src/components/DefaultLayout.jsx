@@ -3,7 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Box from "@mui/material/Box";
 
-const DefaultLayout = ({ children }) => {
+const DefaultLayout = ({ children }) => { 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100px" }}>
       <Header />
@@ -12,8 +12,8 @@ const DefaultLayout = ({ children }) => {
         sx={{
           flex: 1,
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: "center", // Centraliza o conteúdo horizontalmente
+          alignItems: "center", // Centraliza o conteúdo verticalmente
           padding: "30px",
         }}
       >
