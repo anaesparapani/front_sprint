@@ -1,116 +1,125 @@
 import { useState, useEffect } from "react";
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import Paper from "@mui/material/Paper";
-import api from "../axios/axios";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper, Button, CircularProgress } from "@mui/material";
+import api from "../axios/axios"; // Importa a instância do axios para fazer requisições à API
+import { useNavigate } from "react-router-dom"; // Importa o hook de navegação para redirecionar para outra página
 
 function ListSalas() {
+  // Estado para armazenar os dados das salas e o estado de carregamento
   const [salas, setSalas] = useState([]);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // Inicialmente, assume que está carregando
+  const navigate = useNavigate(); // Hook de navegação para redirecionamento
 
+  // Função para obter as salas da API
   async function getSalas() {
-    // Chamada da API
-    await api.getSalas().then(
-      (response) => {
-        console.log(response.data.classrooms);
-        setSalas(response.data.classrooms);
-      },
-      (error) => {
-        console.log("Erro ", error);
-      }
-    );
+    setLoading(true); // Ativa o estado de carregamento
+    try {
+      const response = await api.getSalas(); // Chama a API para buscar as salas
+      setSalas(response.data.classrooms); // Atualiza o estado 'salas' com os dados recebidos da API
+    } catch (error) {
+      console.log("Erro ao carregar salas:", error); // Se houver erro, exibe no console
+    } finally {
+      setLoading(false); // Desativa o estado de carregamento após a resposta
+    }
   }
 
+  // Função para redirecionar o usuário para a página de disponibilidade
+  const handleRowClick = (id_sala) => {
+    navigate(`/disponibilidade`); // Redireciona para a página de disponibilidade com o id da sala
+  };
+
+  // Efetua a chamada à API assim que o componente for montado
+  useEffect(() => {
+    getSalas(); // Chama a função para obter as salas
+  }, []); // O array vazio significa que o useEffect só será chamado uma vez, logo após a montagem do componente
+
+  // Mapeia as salas para exibir cada linha na tabela
   const listSalas = salas.map((sala, index) => {
-    //alternância de cor de fundo para as linhas
-    const backgroundColor = index % 2 === 0 ? "#FFD9D9" : "#FFFFFF"; // se a linha for par será rosa claro, se for impar - branco
+    // Alterna a cor de fundo da linha (rosa claro para linhas pares, branco para linhas ímpares)
+    const backgroundColor = index % 2 === 0 ? "#FFD9D9" : "#FFFFFF";
+
     return (
-      //para garantir que cada linha seja única e tenha uma chave identificadora
-      <TableRow key={sala.id_sala} sx={{ backgroundColor }}>
-        <TableCell //célula do número da sala
-          sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
-        >
+      <TableRow
+        key={sala.id_sala} // A chave única da linha é o id da sala
+        sx={{ backgroundColor }} // Define a cor de fundo da linha
+        onClick={() => handleRowClick(sala.id_sala)} // Ao clicar na linha, redireciona para a página de disponibilidade
+        style={{ cursor: "pointer" }} // Indica que a linha é clicável
+      >
+        {/* Exibe o número da sala */}
+        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}>
           {sala.number}
         </TableCell>
-        <TableCell //célula da descrição
-          sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
-        >
+        {/* Exibe a descrição da sala */}
+        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}>
           {sala.description}
         </TableCell>
-        <TableCell //célula da capacidade
-          sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}
-        >
+        {/* Exibe a capacidade da sala */}
+        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}>
           {sala.capacity}
         </TableCell>
       </TableRow>
     );
   });
 
-  function logout() { //função para o usuario deslogar
-    localStorage.removeItem("authenticated"); //remove a autenticação
-    navigate("/"); //navega para login
+  // Função para deslogar o usuário
+  function logout() {
+    localStorage.removeItem("authenticated"); // Remove a autenticação do localStorage
+    navigate("/"); // Redireciona o usuário para a página de login
   }
-
-  {/*faz a requisição para a API*/}
-  useEffect(() => {
-    getSalas();
-  }, []);
 
   return (
     <div>
-      {salas.length === 0 ? ( //? = após a '?' é true
-        <p>Carregando salas</p>
+      {loading ? (
+        // Exibe um indicador de carregamento enquanto as salas estão sendo carregadas
+        <div style={{ textAlign: "center", marginTop: "20px" }}>
+          <CircularProgress /> 
+          <p>Carregando salas...</p>
+        </div>
       ) : (
-        //após os ':' é false
+        // Exibe as salas na tabela após o carregamento
         <div>
-          <h2 //estilização titulo
+          <h2
             style={{
-              textAlign: "center",
-              marginBottom: "16px",
-              color: "#B22222",
-              fontFamily: "sans-serif",
-              fontWeight: "bold",
-              fontSize: "36px",
+              textAlign: "center", // Centraliza o título
+              marginBottom: "16px", // Margem inferior
+              color: "#B22222", // Cor vermelha do título
+              fontFamily: "sans-serif", // Fonte sem serifa
+              fontWeight: "bold", // Deixa o título em negrito
+              fontSize: "36px", // Tamanho grande do título
             }}
           >
             Salas de Aula
           </h2>
-          <TableContainer //cria uma tabela
+
+          {/* Componente TableContainer para embutir a tabela dentro de um Paper (papel com fundo branco) */}
+          <TableContainer
             component={Paper}
             sx={{
-              marginTop: 4,
-              borderRadius: 2,
-              boxShadow: 3,
-              backgroundColor: "#FFCCCB",
+              marginTop: 4, // Margem superior
+              borderRadius: 2, // Bordas arredondadas
+              boxShadow: 3, // Sombra ao redor do container
+              backgroundColor: "#FFCCCB", // Cor de fundo clara
             }}
           >
+            {/* Tabela que contém as salas */}
             <Table sx={{ minWidth: 650 }}>
-              {/*estilização do cabeçalho */}
               <TableHead
                 sx={{
-                  backgroundColor: "#ff6347",
-                  color: "#fff",
-                  fontWeight: "bold",
+                  backgroundColor: "#ff6347", // Cor de fundo do cabeçalho
+                  color: "#fff", // Cor do texto do cabeçalho (branco)
+                  fontWeight: "bold", // Deixa o texto do cabeçalho em negrito
                 }}
               >
-                {/*definir as linhas da tabela*/}
                 <TableRow>
-                  <TableCell //célula (número)
+                  <TableCell
                     sx={{
-                      textAlign: "center",
-                      padding: "16px",
-                      fontSize: "18px",
+                      textAlign: "center", // Centraliza o texto
+                      padding: "16px", // Adiciona padding nas células
+                      fontSize: "18px", // Tamanho da fonte no cabeçalho
                     }}
                   >
                     Número
                   </TableCell>
-                  <TableCell //célula (descrição)
+                  <TableCell
                     sx={{
                       textAlign: "center",
                       padding: "16px",
@@ -119,7 +128,7 @@ function ListSalas() {
                   >
                     Descrição
                   </TableCell>
-                  <TableCell //célula (capacidade)
+                  <TableCell
                     sx={{
                       textAlign: "center",
                       padding: "16px",
@@ -130,18 +139,21 @@ function ListSalas() {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{listSalas}</TableBody> {/*mostra o contúdo da tabela*/}
+              {/* Corpo da tabela, onde as salas são exibidas */}
+              <TableBody>{listSalas}</TableBody>
             </Table>
           </TableContainer>
-          <Button //estilização botão sair - logout
+
+          {/* Botão de logout */}
+          <Button
             fullWidth
             variant="contained"
-            onClick={logout}
+            onClick={logout} // Chama a função de logout ao clicar
             style={{
-              backgroundColor: "#d40000",
-              color: "white",
-              fontWeight: "bold",
-              marginTop: 10,
+              backgroundColor: "#d40000", // Cor de fundo vermelha do botão
+              color: "white", // Cor do texto branco
+              fontWeight: "bold", // Texto em negrito
+              marginTop: 10, // Espaço entre o botão e os outros elementos
             }}
           >
             SAIR

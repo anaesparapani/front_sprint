@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Salas from "./pages/Salas";
 import ProtectedRoute from "./components/protectedRoute";
+import Disponibilidade from "./pages/Disponibilidade";
+import Reserva from "./pages/Reserva";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/disponibilidade" element={<Disponibilidade/>}/>
+        <Route path="/reserva" element={<Reserva/>}/>
       </Routes>
     </BrowserRouter>
   );
