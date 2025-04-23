@@ -37,6 +37,7 @@ function ReservaSala() {
         backgroundPosition: "center",
       }}
     >
+      {/* input branco no meio */}
       <Paper
         style={{
           padding: "20px",
@@ -94,7 +95,7 @@ function ReservaSala() {
         {/* Botão de Reserva */}
         <Button
           variant="contained"
-          color="primary"
+          backgroundColor="#e03a67"
           onClick={handleReserva}
           disabled={loading} // Desabilita o botão durante o processo de reserva
           fullWidth

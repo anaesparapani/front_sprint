@@ -32,14 +32,17 @@ function ConsultaDisponibilidadeSalas() {
   if (loading) {
     return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>
+        {/* indicador de carregamento circular */}
         <CircularProgress />
         <p>Carregando disponibilidade...</p>
       </div>
     );
   }
 
-  const listaSalas = disponibilidade.map((sala, index) => {
+  // Mapeia as salas para exibir cada linha na tabela
+  const listSalas = disponibilidade.map((sala, index) => {
     const isDisponivel = sala.status === "disponível";
+    // Alterna a cor de fundo da linha (rosa claro para linhas pares, branco para linhas ímpares)
     const backgroundColor = index % 2 === 0 ? "#F9F9F9" : "#FFFFFF";
 
     return (
@@ -69,7 +72,8 @@ function ConsultaDisponibilidadeSalas() {
         backgroundImage: "url('/Imagem_de_fundo.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        minHeight: "100vh",
+        height: "100vh",
+        width: '100%',
         paddingTop: "80px",
         display: "flex",
         flexDirection: "column",
@@ -120,7 +124,8 @@ function ConsultaDisponibilidadeSalas() {
                 <TableCell sx={{ textAlign: "center" }}>Capacidade</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>{listaSalas}</TableBody>
+            {/* Corpo da tabela, onde as salas são exibidas */}
+            <TableBody>{listSalas}</TableBody>
           </Table>
         </TableContainer>
       </div>

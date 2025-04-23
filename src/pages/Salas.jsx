@@ -150,7 +150,7 @@ function ListSalas() {
             variant="contained"
             onClick={logout} // Chama a função de logout ao clicar
             style={{
-              backgroundColor: "#d40000", // Cor de fundo vermelha do botão
+              backgroundColor: "#e03a67", // Cor de fundo vermelha do botão
               color: "white", // Cor do texto branco
               fontWeight: "bold", // Texto em negrito
               marginTop: 10, // Espaço entre o botão e os outros elementos
