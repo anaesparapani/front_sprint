@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function ConsultaDisponibilidadeSalas() {
   const [disponibilidade, setDisponibilidade] = useState([]);
-  const [loading, setLoading] = useState(true); // Controle de estado de carregamento
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,43 +14,41 @@ function ConsultaDisponibilidadeSalas() {
         const response = await api.getDisponibilidade();
         console.log("Dados recebidos da API:", response.data);
         if (response.data && response.data.length > 0) {
-          setDisponibilidade(response.data); // Atualiza o estado se houver dados
+          const salasDisponiveis = response.data.filter(
+            sala => sala.status?.toLowerCase() === "disponivel"
+          );
+          setDisponibilidade(salasDisponiveis);
         } else {
           console.log("Nenhuma disponibilidade encontrada.");
         }
       } catch (error) {
         console.error("Erro ao consultar disponibilidade: ", error);
       } finally {
-        setLoading(false); // Desativa o carregamento quando a resposta for recebida
+        setLoading(false);
       }
     }
     consultarDisponibilidade();
   }, []);
 
-  
-  // Exibe uma mensagem de carregamento enquanto os dados não são recebidos
   if (loading) {
     return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>
-        {/* indicador de carregamento circular */}
         <CircularProgress />
         <p>Carregando disponibilidade...</p>
       </div>
     );
   }
 
-  // Mapeia as salas para exibir cada linha na tabela
   const listSalas = disponibilidade.map((sala, index) => {
     const isDisponivel = sala.status === "disponível";
-    // Alterna a cor de fundo da linha (rosa claro para linhas pares, branco para linhas ímpares)
     const backgroundColor = index % 2 === 0 ? "#F9F9F9" : "#FFFFFF";
 
     return (
       <TableRow
         key={sala.id_sala}
         sx={{ backgroundColor }}
-        onClick={() => navigate(`/disponibilidade/${sala.id_sala}`)} // Passa o ID da sala para a navegação
-        style={{ cursor: "pointer" }} // Indica que a linha é clicável
+        onClick={() => navigate(`/disponibilidade/${sala.id_sala}`)}
+        style={{ cursor: "pointer" }}
       >
         <TableCell sx={{ textAlign: "center", fontWeight: "bold" }}>{sala.number}</TableCell>
         <TableCell sx={{ textAlign: "center" }}>{sala.description}</TableCell>
@@ -122,9 +120,9 @@ function ConsultaDisponibilidadeSalas() {
                 <TableCell sx={{ textAlign: "center" }}>Número</TableCell>
                 <TableCell sx={{ textAlign: "center" }}>Descrição</TableCell>
                 <TableCell sx={{ textAlign: "center" }}>Capacidade</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>Status</TableCell>
               </TableRow>
             </TableHead>
-            {/* Corpo da tabela, onde as salas são exibidas */}
             <TableBody>{listSalas}</TableBody>
           </Table>
         </TableContainer>
