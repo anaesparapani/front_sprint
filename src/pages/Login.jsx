@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -22,7 +22,8 @@ function Login() {
     setUser({ ...user, [name]: value });
   };
 
-  const handleSubmit = (event) => { //processa os dados inseridos
+  const handleSubmit = (event) => {
+    //processa os dados inseridos
     event.preventDefault(); //previne que a página não recarregue
     login();
   };
@@ -30,9 +31,14 @@ function Login() {
   async function login() {
     try {
       const response = await api.postLogin(user);
-      alert(response.data.message)
-      localStorage.setItem('authenticated',true) //salva localmente que este usuário já esta autenticado
-      
+      alert(response.data.message);
+
+      // Armazena o token no localStorage
+      const token = response.data.token; // Supondo que o backend retorna { token: "...", message: "..." }
+      localStorage.setItem("token", token);
+
+      localStorage.setItem("authenticated", true); //salva localmente que este usuário já esta autenticado
+
       navigate("/salas"); //login bem sucedido, navega para salas
     } catch (error) {
       console.log(error);
@@ -55,11 +61,11 @@ function Login() {
     >
       {/*estilização da logo*/}
       <img
-        src="/logo-senai-1.png" 
+        src="/logo-senai-1.png"
         alt="Imagem no topo"
         style={{
           position: "absolute",
-          top: "2%", // posição vertical 
+          top: "2%", // posição vertical
           left: "42%",
           width: "15%", //largura
           zIndex: 1, // para a imagem ficar acima do conteúdo
@@ -77,7 +83,7 @@ function Login() {
       >
         {/*evita que os navegadores façam ajustes próprios no estilo padrão*/}
         <CssBaseline />
-        
+
         {/*estilização da box de login*/}
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography
@@ -136,7 +142,7 @@ function Login() {
                 backgroundColor: "#d40000",
                 color: "white",
                 fontWeight: "bold",
-                alignItems: 'center',
+                alignItems: "center",
                 marginTop: 10,
               }}
             >

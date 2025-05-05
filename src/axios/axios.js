@@ -11,8 +11,8 @@ const sheets = {
   postCadastro: (user) => api.post("user/", user),
   postLogin: (user) => api.post("user/login/", user),
   getSalas: () => api.get("classroom/"),
-  getSalasSemReservas: () => api.get("disponibilidade"), 
-  
+  getHorariosDisponiveisPorSalaEData: (fk_number, date) => api.get(`/disponibilidade/${fk_number}/${date}`),
+  postReserva: (reserva) => api.post("/schedule/", reserva),
 };
 
 export default sheets;

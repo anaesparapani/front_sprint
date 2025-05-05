@@ -1,28 +1,55 @@
-import { useState } from "react";
-import { TextField, Button, Paper, Typography } from "@mui/material";
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import sheets from "../axios/axios";
 
-function ReservaSala() {
+export default function CriarReserva() {
   const [descricao, setDescricao] = useState("");
-  const [dataInicio, setDataInicio] = useState("");
-  const [dataFim, setDataFim] = useState("");
+  const [data, setData] = useState("");
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaFim, setHoraFim] = useState("");
+  const [sala, setSala] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Função para simular a reserva
   const handleReserva = async () => {
-    if (!descricao || !dataInicio || !dataFim) {
-      alert("Todos os campos são obrigatórios!");
+    if (!descricao || !data || !horaInicio || !horaFim || !sala) {
+      alert("Por favor, preencha todos os campos!");
       return;
     }
 
-    setLoading(true);
-    // Aqui você pode fazer a chamada à API para salvar a reserva
-    setTimeout(() => {
+    const dadosReserva = {
+      fk_id_usuario: 1,
+      descricao,
+      inicio_periodo: `${data} ${horaInicio}`,
+      fim_periodo: `${data} ${horaFim}`,
+      fk_number: sala,
+    };
+
+    try {
+      setLoading(true);
+      const response = await sheets.postReserva(dadosReserva);
+      alert(response.data.message);
+      navigate(-1);
+    } catch (error) {
+      console.error("Erro ao reservar sala:", error);
+      alert("Não foi possível realizar a reserva.");
+    } finally {
       setLoading(false);
-      alert("Reserva realizada com sucesso!");
-      navigate("/disponibilidade"); // Redireciona após reserva
-    }, 2000); // Simula o tempo de resposta da API
+    }
+  };
+
+  const handleCancelar = () => {
+    setDescricao("");
+    setData("");
+    setHoraInicio("");
+    setHoraFim("");
+    setSala("");
   };
 
   return (
@@ -37,68 +64,81 @@ function ReservaSala() {
         backgroundPosition: "center",
       }}
     >
-      {/* input branco no meio */}
       <Paper
         style={{
           padding: "20px",
           borderRadius: 10,
           maxWidth: "500px",
           width: "100%",
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backgroundColor: "rgba(255, 255, 255, 0.85)",
         }}
       >
-        {/* Título acima do container */}
-        <Typography 
-          variant="h4" 
-          align="center" 
-          color="#B22222" 
-          fontFamily="revert-layer" 
-          style={{ marginBottom: "30px" }} // Espacamento maior entre título e campos
+        <Typography
+          variant="h4"
+          align="center"
+          color="#B22222"
+          fontFamily="revert-layer"
+          style={{ marginBottom: "30px" }}
         >
           Reserva de Sala
         </Typography>
 
-        {/* Descrição */}
         <TextField
           label="Descrição"
-          variant="outlined"
           fullWidth
           value={descricao}
           onChange={(e) => setDescricao(e.target.value)}
-          style={{ marginBottom: "16px" }}
+          margin="normal"
         />
 
-        {/* Data de Início */}
         <TextField
-          label="Data de Início"
-          type="datetime-local"
-          variant="outlined"
+          label="Data"
           fullWidth
-          value={dataInicio}
-          onChange={(e) => setDataInicio(e.target.value)}
-          InputLabelProps={{ shrink: true }} // Isso impede o encolhimento do label e melhora o layout
-          style={{ marginBottom: "16px" }}
+          type="date"
+          value={data}
+          onChange={(e) => setData(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+          margin="normal"
         />
 
-        {/* Data de Fim */}
+        <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+          <TextField
+            label="Início"
+            type="time"
+            fullWidth
+            value={horaInicio}
+            onChange={(e) => setHoraInicio(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            label="Término"
+            type="time"
+            fullWidth
+            value={horaFim}
+            onChange={(e) => setHoraFim(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+        </div>
+
         <TextField
-          label="Data de Fim"
-          type="datetime-local"
-          variant="outlined"
+          label="Número da Sala"
           fullWidth
-          value={dataFim}
-          onChange={(e) => setDataFim(e.target.value)}
-          InputLabelProps={{ shrink: true }} // Isso impede o encolhimento do label e melhora o layout
-          style={{ marginBottom: "16px" }}
+          value={sala}
+          onChange={(e) => setSala(e.target.value)}
+          margin="normal"
         />
 
-        {/* Botão de Reserva */}
         <Button
           variant="contained"
-          backgroundColor="#e03a67"
-          onClick={handleReserva}
-          disabled={loading} // Desabilita o botão durante o processo de reserva
           fullWidth
+          onClick={handleReserva}
+          disabled={loading}
+          style={{
+            backgroundColor: "#e03a67",
+            color: "#fff",
+            marginTop: "16px",
+            marginBottom: "10px",
+          }}
         >
           {loading ? "Reservando..." : "Reservar"}
         </Button>
@@ -106,5 +146,3 @@ function ReservaSala() {
     </div>
   );
 }
-
-export default ReservaSala;

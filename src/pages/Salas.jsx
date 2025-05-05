@@ -1,167 +1,244 @@
-import { useState, useEffect } from "react";
-import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper, Button, CircularProgress } from "@mui/material";
-import api from "../axios/axios"; // Importa a instância do axios para fazer requisições à API
-import { useNavigate } from "react-router-dom"; // Importa o hook de navegação para redirecionar para outra página
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  CircularProgress,
+  Modal,
+  TextField,
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material"; // Importação de componentes do Material UI
+import api from "../axios/axios"; // Importação do arquivo API para fazer requisições
+import { Link } from "react-router-dom"; // Importação do Link para navegação
 
-function ListSalas() {
-  // Estado para armazenar os dados das salas e o estado de carregamento
-  const [salas, setSalas] = useState([]);
-  const [loading, setLoading] = useState(true); // Inicialmente, assume que está carregando
-  const navigate = useNavigate(); // Hook de navegação para redirecionamento
+export default function SalasDisponiveis() {
+  // Estados principais
+  const [salas, setSalas] = useState([]); // Armazena as salas buscadas da API
+  const [loading, setLoading] = useState(true); // Indica se os dados ainda estão carregando
+  const [modalVisible, setModalVisible] = useState(false); // Controla a visibilidade do modal de horários
 
-  // Função para obter as salas da API
-  async function getSalas() {
-    setLoading(true); // Ativa o estado de carregamento
-    try {
-      const response = await api.getSalas(); // Chama a API para buscar as salas
-      setSalas(response.data.classrooms); // Atualiza o estado 'salas' com os dados recebidos da API
-    } catch (error) {
-      console.log("Erro ao carregar salas:", error); // Se houver erro, exibe no console
-    } finally {
-      setLoading(false); // Desativa o estado de carregamento após a resposta
-    }
-  }
+  // Armazena a sala atualmente selecionada
+  // estado inicial é null, porque não tem sala selecionada
+  const [salaSelecionada, setSalaSelecionada] = useState(null);
+  const [dataDigitada, setDataDigitada] = useState(""); // Data que o usuário digita para ver horários disponíveis
+  const [horarios, setHorarios] = useState([]); // Horários disponíveis retornados da API
 
-  // Função para redirecionar o usuário para a página de disponibilidade
-  const handleRowClick = (id_sala) => {
-    navigate(`/disponibilidade`); // Redireciona para a página de disponibilidade com o id da sala
-  };
-
-  // Efetua a chamada à API assim que o componente for montado
+  // Busca todas as salas assim que o componente for montado
   useEffect(() => {
-    getSalas(); // Chama a função para obter as salas
-  }, []); // O array vazio significa que o useEffect só será chamado uma vez, logo após a montagem do componente
+    const fetchSalas = async () => {
+      try {
+        const response = await api.getSalas(); // Requisição para buscar salas
+        setSalas(response?.data?.classrooms || []); // Armazena as salas na variável de estado
+      } catch (error) {
+        console.log("Erro ao buscar salas:", error); // Tratamento de erro
+      } finally {
+        setLoading(false); // Finaliza o carregamento, com ou sem sucesso
+      }
+    };
+    fetchSalas(); // Chama a função que faz a requisição
+  }, []); // O array vazio significa que a requisição será feita uma única vez, quando o componente for montado
 
-  // Mapeia as salas para exibir cada linha na tabela
-  const listSalas = salas.map((sala, index) => {
-    // Alterna a cor de fundo da linha (rosa claro para linhas pares, branco para linhas ímpares)
-    const backgroundColor = index % 2 === 0 ? "#FFD9D9" : "#FFFFFF";
+  // Função que busca os horários disponíveis da sala selecionada para uma data
+  const fetchHorarios = async () => {
+    // Só faz a requisição se tiver data e a sala selecionada
+    if (!dataDigitada || !salaSelecionada) return; // Impede requisição se faltar dados
 
-    return (
-      <TableRow
-        key={sala.id_sala} // A chave única da linha é o id da sala
-        sx={{ backgroundColor }} // Define a cor de fundo da linha
-        onClick={() => handleRowClick(sala.id_sala)} // Ao clicar na linha, redireciona para a página de disponibilidade
-        style={{ cursor: "pointer" }} // Indica que a linha é clicável
-      >
-        {/* Exibe o número da sala */}
-        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}>
-          {sala.number}
-        </TableCell>
-        {/* Exibe a descrição da sala */}
-        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}>
-          {sala.description}
-        </TableCell>
-        {/* Exibe a capacidade da sala */}
-        <TableCell sx={{ textAlign: "center", padding: "16px", fontWeight: "bold" }}>
-          {sala.capacity}
-        </TableCell>
-      </TableRow>
-    );
-  });
-
-  // Função para deslogar o usuário
-  function logout() {
-    localStorage.removeItem("authenticated"); // Remove a autenticação do localStorage
-    navigate("/"); // Redireciona o usuário para a página de login
-  }
+    try {
+      // Requisição para buscar os horários
+      const response = await api.getHorariosDisponiveisPorSalaEData(
+        salaSelecionada.number,
+        dataDigitada
+      ); 
+      // Armazena os horários na variável de estado
+      setHorarios(response?.data?.time_slots || []); 
+    } catch (error) {
+      console.log("Erro ao buscar horários:", error); // Tratamento de erro
+    }
+  };
 
   return (
     <div>
+      {/* Título da página */}
+      <Typography
+        variant="h4"
+        align="center"
+        gutterBottom
+        sx={{
+          color: "#B22222", // Cor vermelha para o título
+          fontWeight: "bold", // Negrito
+          fontSize: "36px", // Tamanho da fonte
+          marginTop: 4,
+          marginBottom: 2,
+        }}
+      >
+        Salas Disponíveis
+      </Typography>
+
+      {/* Exibe um loading (carregamento) enquanto as salas estão sendo carregadas */}
       {loading ? (
-        // Exibe um indicador de carregamento enquanto as salas estão sendo carregadas
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <CircularProgress /> 
-          <p>Carregando salas...</p>
+        <div style={{ textAlign: "center", marginTop: 20 }}>
+          {/* Carregamento circular */}
+          <CircularProgress />
+          <p>Carregando salas...</p> {/* Mensagem de carregamento */}
         </div>
       ) : (
-        // Exibe as salas na tabela após o carregamento
-        <div>
-          <h2
-            style={{
-              textAlign: "center", // Centraliza o título
-              marginBottom: "16px", // Margem inferior
-              color: "#B22222", // Cor vermelha do título
-              fontFamily: "sans-serif", // Fonte sem serifa
-              fontWeight: "bold", // Deixa o título em negrito
-              fontSize: "36px", // Tamanho grande do título
-            }}
-          >
-            Salas de Aula
-          </h2>
-
-          {/* Componente TableContainer para embutir a tabela dentro de um Paper (papel com fundo branco) */}
-          <TableContainer
-            component={Paper}
-            sx={{
-              marginTop: 4, // Margem superior
-              borderRadius: 2, // Bordas arredondadas
-              boxShadow: 3, // Sombra ao redor do container
-              backgroundColor: "#FFCCCB", // Cor de fundo clara
-            }}
-          >
-            {/* Tabela que contém as salas */}
-            <Table sx={{ minWidth: 650 }}>
-              <TableHead
-                sx={{
-                  backgroundColor: "#ff6347", // Cor de fundo do cabeçalho
-                  color: "#fff", // Cor do texto do cabeçalho (branco)
-                  fontWeight: "bold", // Deixa o texto do cabeçalho em negrito
-                }}
-              >
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      textAlign: "center", // Centraliza o texto
-                      padding: "16px", // Adiciona padding nas células
-                      fontSize: "18px", // Tamanho da fonte no cabeçalho
-                    }}
-                  >
-                    Número
+        // Tabela com as salas disponíveis
+        <TableContainer
+          // Sombra nos cantos da tabela
+          component={Paper}
+          sx={{
+            marginTop: 4,
+            borderRadius: 2,
+            boxShadow: 3,
+            backgroundColor: "#FFCCCB", // Cor de fundo clara
+          }}
+        >
+          <Table sx={{ minWidth: 650 }}>
+            <TableHead sx={{ backgroundColor: "#ff6347" }}>
+              <TableRow>
+                {/* Cabeçalhos da tabela */}
+                {["Nome da Sala", "Descrição", "Capacidade", "Horários"].map(
+                  (header) => (
+                    <TableCell
+                      key={header}
+                      sx={{
+                        textAlign: "center",
+                        fontSize: "18px",
+                        fontWeight: "bold", // Negrito no cabeçalho
+                      }}
+                    >
+                      {header}
+                    </TableCell>
+                  )
+                )}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {/* Linhas da tabela para cada sala */}
+              {salas.map((sala, index) => (
+                <TableRow
+                  key={sala.number}
+                  sx={{
+                    // Linhas pares recebem a cor "#FFD9D9", e linhas ímpares recebem "#FFFFFF"
+                    backgroundColor: index % 2 === 0 ? "#FFD9D9" : "#FFFFFF",
+                  }}
+                >
+                  <TableCell sx={{ textAlign: "center", fontWeight: "bold" }}>
+                    {sala.number} {/* Número da sala */}
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      textAlign: "center",
-                      padding: "16px",
-                      fontSize: "18px",
-                    }}
-                  >
-                    Descrição
+                  <TableCell sx={{ textAlign: "center", fontWeight: "bold" }}>
+                    {sala.description} {/* Descrição da sala */}
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      textAlign: "center",
-                      padding: "16px",
-                      fontSize: "18px",
-                    }}
-                  >
-                    Capacidade
+                  <TableCell sx={{ textAlign: "center", fontWeight: "bold" }}>
+                    {sala.capacity} {/* Capacidade da sala */}
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {/* Botão para abrir o modal de horários */}
+                    <Button
+                      variant="contained"
+                      sx={{ backgroundColor: "#ff6347", fontWeight: "bold" }}
+                      onClick={() => {
+                        // Atualizar o estado da sala selecionada
+                        setSalaSelecionada(sala);
+                        // Exibir o modal
+                        setModalVisible(true);
+                        // Limpar horários e data digitada ao abrir o modal
+                        setHorarios([]);
+                        setDataDigitada("");
+                      }}
+                    >
+                      ⏱ {/* Ícone de relógio que vai aparecer*/}
+                    </Button>
                   </TableCell>
                 </TableRow>
-              </TableHead>
-              {/* Corpo da tabela, onde as salas são exibidas */}
-              <TableBody>{listSalas}</TableBody>
-            </Table>
-          </TableContainer>
-
-          {/* Botão de logout */}
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={logout} // Chama a função de logout ao clicar
-            style={{
-              backgroundColor: "#e03a67", // Cor de fundo vermelha do botão
-              color: "white", // Cor do texto branco
-              fontWeight: "bold", // Texto em negrito
-              marginTop: 10, // Espaço entre o botão e os outros elementos
-            }}
-          >
-            SAIR
-          </Button>
-        </div>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
+
+      {/* Modal para ver os horários disponíveis de uma sala */}
+      <Modal open={modalVisible} onClose={() => setModalVisible(false)}>
+        <Box
+          sx={{
+            padding: 4,
+            backgroundColor: "white",
+            borderRadius: 2,
+            maxWidth: 500,
+            margin: "100px auto", // Centraliza o modal na tela
+          }}
+        >
+          <Typography variant="h6" align="center" gutterBottom>
+            Sala {salaSelecionada?.number}{" "}
+            {/* Exibe o número da sala selecionada */}
+          </Typography>
+
+          {/* Campo para digitar a data */}
+          <TextField
+            fullWidth
+            variant="outlined"
+            label="Digite a data (YYYY-MM-DD)"
+            value={dataDigitada}
+            onChange={(e) => setDataDigitada(e.target.value)} // Atualiza o estado da data digitada
+            sx={{ marginBottom: 2 }}
+          />
+
+          {/* Botão que busca os horários disponíveis */}
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: "#e03a67", fontWeight: "bold" }}
+            fullWidth
+            onClick={fetchHorarios} // Chama a função de buscar horários
+          >
+            Ver horários disponíveis
+          </Button>
+
+          <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
+            Horários disponíveis:
+          </Typography>
+
+          {/* Lista de horários retornados */}
+          <Box sx={{ maxHeight: 300, overflowY: "auto", marginBottom: 2 }}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableBody>
+                  {horarios.map((hora, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        {/* Link que leva para a tela de reserva */}
+                        <Link
+                          to={`/reserva`}
+                          style={{ textDecoration: "none", color: "blue" }}
+                        >
+                          {`${hora.start_time} - ${hora.end_time}`}{" "}
+                          {/* Horário */}
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+
+          {/* Botão para fechar o modal */}
+          <Button
+            variant="outlined"
+            color="error"
+            fullWidth
+            sx={{ fontWeight: "bold" }}
+            onClick={() => setModalVisible(false)} // Fecha o modal
+          >
+            Fechar
+          </Button>
+        </Box>
+      </Modal>
     </div>
   );
 }
-
-export default ListSalas;
