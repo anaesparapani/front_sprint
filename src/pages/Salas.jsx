@@ -49,14 +49,24 @@ export default function SalasDisponiveis() {
     // Só faz a requisição se tiver data e a sala selecionada
     if (!dataDigitada || !salaSelecionada) return; // Impede requisição se faltar dados
 
+    // Validação para bloquear datas passadas
+    const hoje = new Date();
+    const dataSelecionada = new Date(dataDigitada + "T00:00:00");
+
+    // Se a data for anterior a hoje, exibe um alerta e interrompe a execução
+    if (dataSelecionada < new Date(hoje.toDateString())) {
+      alert("Não é possível visualizar horários para datas passadas.");
+      return;
+    }
+
     try {
       // Requisição para buscar os horários
       const response = await api.getHorariosDisponiveisPorSalaEData(
         salaSelecionada.number,
         dataDigitada
-      ); 
+      );
       // Armazena os horários na variável de estado
-      setHorarios(response?.data?.time_slots || []); 
+      setHorarios(response?.data?.time_slots || []);
     } catch (error) {
       console.log("Erro ao buscar horários:", error); // Tratamento de erro
     }
