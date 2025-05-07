@@ -1,49 +1,70 @@
+// Importa o React e o hook useState do pacote React.
 import React, { useState } from "react";
+
+// Importa componentes de UI do Material-UI.
 import {
   TextField,
   Button,
   Paper,
   Typography,
 } from "@mui/material";
+
+// Importa o hook useNavigate para navegação de rotas no React Router.
 import { useNavigate } from "react-router-dom";
+
+// Importa a instância configurada do axios para realizar requisições HTTP.
 import sheets from "../axios/axios";
 
+// Função componente principal chamada CriarReserva.
 export default function CriarReserva() {
+  // Declara os estados locais para armazenar os valores dos inputs do formulário.
   const [descricao, setDescricao] = useState("");
   const [data, setData] = useState("");
   const [horaInicio, setHoraInicio] = useState("");
   const [horaFim, setHoraFim] = useState("");
   const [sala, setSala] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Hook para redirecionamento de páginas.
   const navigate = useNavigate();
 
+  // Função para lidar com a tentativa de criar uma reserva.
   const handleReserva = async () => {
+    // Verifica se todos os campos obrigatórios foram preenchidos.
     if (!descricao || !data || !horaInicio || !horaFim || !sala) {
       alert("Por favor, preencha todos os campos!");
       return;
     }
 
+    // Cria um objeto com os dados da reserva.
     const dadosReserva = {
-      fk_id_usuario: 1,
-      descricao,
-      inicio_periodo: `${data} ${horaInicio}`,
-      fim_periodo: `${data} ${horaFim}`,
-      fk_number: sala,
+      fk_id_usuario: 1, // ID fixo de usuário (exemplo ou temporário).
+      descricao, // Descrição da reserva.
+      inicio_periodo: `${data} ${horaInicio}`, // Data e hora de início concatenadas.
+      fim_periodo: `${data} ${horaFim}`, // Data e hora de término concatenadas.
+      fk_number: sala, // Número da sala.
     };
 
     try {
+      // Define o estado de loading como true durante o envio da requisição.
       setLoading(true);
+      // Envia a requisição POST para criar a reserva usando o serviço sheets.
       const response = await sheets.postReserva(dadosReserva);
+      // Exibe a mensagem de resposta.
       alert(response.data.message);
+      // Retorna para a página anterior.
       navigate(-1);
     } catch (error) {
+      // Exibe erro no console e alerta em caso de falha na requisição.
       console.error("Erro ao reservar sala:", error);
       alert("Não foi possível realizar a reserva.");
     } finally {
+      // Reseta o estado de loading para false após a tentativa.
       setLoading(false);
     }
   };
 
+  // Função para limpar todos os campos do formulário.
   const handleCancelar = () => {
     setDescricao("");
     setData("");
@@ -52,8 +73,10 @@ export default function CriarReserva() {
     setSala("");
   };
 
+  // Retorna a interface do componente.
   return (
     <div
+      // Estilo inline para centralizar o conteúdo vertical e horizontalmente, com imagem de fundo.
       style={{
         display: "flex",
         justifyContent: "center",
@@ -65,6 +88,7 @@ export default function CriarReserva() {
       }}
     >
       <Paper
+        // Componente Paper do Material-UI com padding e estilo de card semi-transparente.
         style={{
           padding: "20px",
           borderRadius: 10,
@@ -74,6 +98,7 @@ export default function CriarReserva() {
         }}
       >
         <Typography
+          // Título principal da página.
           variant="h4"
           align="center"
           color="#B22222"
@@ -83,6 +108,7 @@ export default function CriarReserva() {
           Reserva de Sala
         </Typography>
 
+        {/* Campo de texto para descrição da reserva */}
         <TextField
           label="Descrição"
           fullWidth
@@ -91,17 +117,20 @@ export default function CriarReserva() {
           margin="normal"
         />
 
+        {/* Campo de seleção de data */}
         <TextField
           label="Data"
           fullWidth
           type="date"
           value={data}
           onChange={(e) => setData(e.target.value)}
-          InputLabelProps={{ shrink: true }}
+          InputLabelProps={{ shrink: true }} // Mantém o label acima mesmo com valor.
           margin="normal"
         />
 
+        {/* Div para agrupar os campos de hora */}
         <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+          {/* Campo para hora de início */}
           <TextField
             label="Início"
             type="time"
@@ -110,6 +139,7 @@ export default function CriarReserva() {
             onChange={(e) => setHoraInicio(e.target.value)}
             InputLabelProps={{ shrink: true }}
           />
+          {/* Campo para hora de término */}
           <TextField
             label="Término"
             type="time"
@@ -120,6 +150,7 @@ export default function CriarReserva() {
           />
         </div>
 
+        {/* Campo para inserir o número da sala */}
         <TextField
           label="Número da Sala"
           fullWidth
@@ -128,11 +159,12 @@ export default function CriarReserva() {
           margin="normal"
         />
 
+        {/* Botão para enviar a reserva */}
         <Button
           variant="contained"
           fullWidth
           onClick={handleReserva}
-          disabled={loading}
+          disabled={loading} // Desativa o botão durante a requisição.
           style={{
             backgroundColor: "#e03a67",
             color: "#fff",
@@ -140,6 +172,7 @@ export default function CriarReserva() {
             marginBottom: "10px",
           }}
         >
+          {/* Altera o texto do botão dependendo do estado de loading */}
           {loading ? "Reservando..." : "Reservar"}
         </Button>
       </Paper>

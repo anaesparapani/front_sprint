@@ -34,7 +34,8 @@ function Login() {
       alert(response.data.message);
 
       // Armazena o token no localStorage
-      const token = response.data.token; // Supondo que o backend retorna { token: "...", message: "..." }
+      // Supondo que o backend retorna { token: "...", message: "..." }
+      const token = response.data.token; 
       localStorage.setItem("token", token);
 
       localStorage.setItem("authenticated", true); //salva localmente que este usuário já esta autenticado

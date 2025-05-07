@@ -56,6 +56,7 @@ export default function SalasDisponiveis() {
     // Se a data for anterior a hoje, exibe um alerta e interrompe a execução
     if (dataSelecionada < new Date(hoje.toDateString())) {
       alert("Não é possível visualizar horários para datas passadas.");
+      // Esse return impede que a função continue se a data escolhida já tiver passado
       return;
     }
 
@@ -65,7 +66,10 @@ export default function SalasDisponiveis() {
         salaSelecionada.number,
         dataDigitada
       );
-      // Armazena os horários na variável de estado
+      // Tenta pegar os horários disponíveis da resposta da API
+      // Se conseguir, se time_slots existir, ele salva isso no estado horarios.
+      //Se não conseguir, se response, data ou time_slots for undefined, ele salva uma lista vazia [] no lugar.
+      //time_slots = lista de horários disponíveis para uma sala e data escolhidas. (Intervalos de tempo disponíveis)
       setHorarios(response?.data?.time_slots || []);
     } catch (error) {
       console.log("Erro ao buscar horários:", error); // Tratamento de erro
@@ -185,6 +189,8 @@ export default function SalasDisponiveis() {
           }}
         >
           <Typography variant="h6" align="center" gutterBottom>
+            {/* Exibe o texto "Sala " seguido do número da sala selecionada. */}
+            {/* adiciona um espaço em branco literal após número.  */}
             Sala {salaSelecionada?.number}{" "}
             {/* Exibe o número da sala selecionada */}
           </Typography>
