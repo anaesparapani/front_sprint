@@ -40,7 +40,7 @@ function Login() {
 
       localStorage.setItem("authenticated", true); //salva localmente que este usuário já esta autenticado
 
-      navigate("/salas"); //login bem sucedido, navega para salas
+      navigate("/Home"); //login bem sucedido, navega para salas
     } catch (error) {
       console.log(error);
       alert(error.response.data.error);
