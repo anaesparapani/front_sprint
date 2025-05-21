@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TextField, Button, Box, Typography, Container, CssBaseline } from "@mui/material";
+import { TextField, Button, Box, Typography, CssBaseline } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import DeleteIcon from "@mui/icons-material/Delete";
 import api from "../axios/axios";
@@ -23,8 +23,7 @@ function Perfil() {
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.updateUser(user); // Assuma que essa função está configurada na sua API
-      alert("Usuário atualizado com sucesso!");
+      const response = await api.updateUser(user);
       console.log(response);
     } catch (error) {
       alert("Erro ao atualizar usuário.");
@@ -34,7 +33,7 @@ function Perfil() {
 
   const handleDelete = async () => {
     try {
-      await api.deleteUser(user.id); // ou `user.id` dependendo de como você faz isso
+      await api.deleteUser(user.id);
       alert("Conta excluída com sucesso.");
       navigate("/");
     } catch (error) {
@@ -49,112 +48,166 @@ function Perfil() {
         backgroundImage: "url('/Imagem_de_fundo.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         height: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        position: "relative",
       }}
     >
       {/* Logo SENAI */}
-      <img
-        src="/logo-senai-1.png"
-        alt="Logo SENAI"
-        style={{
-          position: "absolute",
-          top: "2%",
-          left: "2%",
-          width: "10%",
-          zIndex: 1,
-        }}
-      />
+      <Typography
+  variant="h4"
+  style={{
+    position: "absolute",
+    top: "20px",
+    left: "20px",
+    fontWeight: "bold",
+    color: "white",
+    fontSize: "36px",
+    letterSpacing: "3px",
+    fontFamily: "Arial, sans-serif",
+    textTransform: "uppercase",
+  }}
+>
+  SENAI
+</Typography>
 
-      <Container
-        maxWidth="xs"
+
+      <Box
         style={{
-          backgroundColor: "rgba(255,255,255,0.9)",
-          border: "2px solid #007fff",
-          borderRadius: 15,
-          padding: "20px 30px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+          display: "flex",
+          backgroundColor: "#ffeaea",
+          borderRadius: "12px",
+          width: "800px",
+          padding: "30px",
+          boxShadow: "0 0 10px rgba(0,0,0,0.2)",
         }}
       >
-        <CssBaseline />
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          style={{ width: "30%", marginRight: "20px" }}
+        >
+          <Box
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: "50%",
+              padding: "15px",
+              width: "80px",
+              height: "80px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <PersonIcon style={{ fontSize: 50, color: "#f28b8b" }} />
+          </Box>
+        </Box>
 
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box style={{ width: "70%" }}>
+          <CssBaseline />
           <Typography
             variant="h5"
             style={{
               fontWeight: "bold",
-              color: "#e60000",
-              marginBottom: 10,
+              color: "#f28b8b",
+              marginBottom: 20,
+              textAlign: "center",
             }}
           >
             MEU PERFIL
           </Typography>
 
-          <PersonIcon style={{ fontSize: 60, color: "#e60000", marginBottom: 10 }} />
-
-          <form onSubmit={handleUpdate} style={{ width: "100%" }}>
+          <form onSubmit={handleUpdate}>
             <TextField
-              margin="normal"
               fullWidth
-              label="Nome"
+              placeholder="Nome:"
               name="name"
               value={user.name}
               onChange={onChange}
-              style={{ backgroundColor: "#fff", borderRadius: 5 }}
+              style={{
+                marginBottom: 12,
+                backgroundColor: "#fff",
+                borderRadius: 8,
+                
+              }}
             />
             <TextField
-              margin="normal"
               fullWidth
-              label="CPF"
+              placeholder="CPF:"
               name="cpf"
               value={user.cpf}
               onChange={onChange}
-              style={{ backgroundColor: "#fff", borderRadius: 5 }}
+              style={{
+                marginBottom: 12,
+                backgroundColor: "#fff",
+                borderRadius: 8,
+              }}
             />
             <TextField
-              margin="normal"
               fullWidth
-              label="E-mail"
+              placeholder="E-mail:"
               name="email"
               type="email"
               value={user.email}
               onChange={onChange}
-              style={{ backgroundColor: "#fff", borderRadius: 5 }}
+              style={{
+                marginBottom: 12,
+                backgroundColor: "#fff",
+                borderRadius: 8,
+              }}
             />
             <TextField
-              margin="normal"
               fullWidth
-              label="Senha"
+              placeholder="Senha:"
               name="password"
               type="password"
               value={user.password}
               onChange={onChange}
-              style={{ backgroundColor: "#fff", borderRadius: 5 }}
+              style={{
+                marginBottom: 20,
+                backgroundColor: "#fff",
+                borderRadius: 8,
+              }}
             />
 
-            <Box mt={2} display="flex" justifyContent="space-between">
+            <Box display="flex" justifyContent="space-between">
               <Button
-                variant="contained"
-                color="error"
                 type="submit"
-                style={{ flex: 1, marginRight: 10 }}
+                style={{
+                  backgroundColor: "#e60000",
+                  color: "#fff",
+                  padding: "10px 15px",
+                  borderRadius: 10,
+                  fontWeight: "bold",
+                  flex: 1,
+                  marginRight: 10,
+                }}
               >
                 Atualizar
               </Button>
               <Button
-                variant="contained"
-                style={{ backgroundColor: "#e60000", color: "white", flex: 1 }}
-                startIcon={<DeleteIcon />}
                 onClick={handleDelete}
+                startIcon={<DeleteIcon />}
+                style={{
+                  backgroundColor: "#e60000",
+                  color: "#fff",
+                  padding: "10px 15px",
+                  borderRadius: 10,
+                  fontWeight: "bold",
+                  flex: 1,
+                }}
               >
                 Excluir
               </Button>
             </Box>
           </form>
         </Box>
-      </Container>
+      </Box>
     </div>
   );
 }
