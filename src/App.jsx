@@ -7,7 +7,8 @@ import Salas from "./pages/Salas";
 import ProtectedRoute from "./components/protectedRoute";
 import Reserva from "./pages/Reserva";
 import Perfil from "./pages/Perfil";
-import Header from "./components/Header";
+import UserReserva from "./pages/User_Reserva";
+
 function App() {
   return (
     <BrowserRouter>
@@ -23,8 +24,9 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/reserva" element={<Reserva/>}/>
+        <Route path="/reserva" element={<Reserva />} />
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/UserReserva" element={<UserReserva />} />
       </Routes>
     </BrowserRouter>
   );
