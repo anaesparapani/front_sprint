@@ -31,21 +31,29 @@ function Login() {
   async function login() {
     try {
       const response = await api.postLogin(user);
-      alert(response.data.message);
-
-      // Armazena o token no localStorage
-      // Supondo que o backend retorna { token: "...", message: "..." }
-      const token = response.data.token; 
-      localStorage.setItem("token", token);
-
-      localStorage.setItem("authenticated", true); //salva localmente que este usuário já esta autenticado
-
-      navigate("/Home"); //login bem sucedido, navega para salas
+  
+      if (response && response.data) {
+        alert(response.data.message);
+  
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+        localStorage.setItem("authenticated", true);
+  
+        navigate("/Home");
+      } else {
+        alert("Resposta inválida do servidor.");
+      }
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.error);
+      console.error(error);
+      // Verifique se existe `error.response` antes de acessar `.data`
+      if (error.response && error.response.data && error.response.data.error) {
+        alert(error.response.data.error);
+      } else {
+        alert("Erro na conexão com o servidor.");
+      }
     }
   }
+  
 
   return (
     //estlização da imagem de fundo

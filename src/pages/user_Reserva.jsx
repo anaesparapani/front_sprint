@@ -19,8 +19,9 @@ function UserReserva() {
   useEffect(() => {
     async function fetchReservas() {
       try {
+        const userId = localStorage.getItem("userId");
         const response = await api.getAllSchedules(userId);
-        setReservas(response.data);
+        setReservas(response.data.schedules);
       } catch (error) {
         console.error("Erro ao carregar reservas:", error);
       }
@@ -53,7 +54,6 @@ function UserReserva() {
           fontSize: "36px",
           letterSpacing: "3px",
           fontFamily: "Arial, sans-serif",
-          textTransform: "uppercase",
         }}
       >
         SENAI
