@@ -31,21 +31,27 @@ function Login() {
   async function login() {
     try {
       const response = await api.postLogin(user);
-  
-      if (response && response.data) {
-        alert(response.data.message);
-  
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-        localStorage.setItem("authenticated", true);
-  
-        navigate("/Home");
-      } else {
-        alert("Resposta inválida do servidor.");
+
+      console.log("Conteúdo do usuário:", response.data.user);
+
+      const userId = response.data.user?.id_usuario;
+
+      if (!userId) {
+        console.error("userId não encontrado na resposta.");
+        return;
       }
+
+      alert(response.data.message);
+
+      localStorage.setItem("userId", userId);
+
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      localStorage.setItem("authenticated", true);
+
+      navigate("/Home");
     } catch (error) {
       console.error(error);
-      // Verifique se existe `error.response` antes de acessar `.data`
       if (error.response && error.response.data && error.response.data.error) {
         alert(error.response.data.error);
       } else {
@@ -53,7 +59,6 @@ function Login() {
       }
     }
   }
-  
 
   return (
     //estlização da imagem de fundo

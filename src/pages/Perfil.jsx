@@ -1,15 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  CssBaseline,
-} from "@mui/material";
+import { TextField, Button, Box, Typography, CssBaseline } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import DeleteIcon from "@mui/icons-material/Delete";
-import api from "../axios/axios";
 
 function Perfil() {
   const [user, setUser] = useState({
@@ -25,28 +18,6 @@ function Perfil() {
   const onChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
-  };
-
-  const handleUpdate = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await api.updateUser(user);
-      console.log(response);
-    } catch (error) {
-      alert("Erro ao atualizar usuário.");
-      console.log(error);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await api.deleteUser(user.id);
-      alert("Conta excluída com sucesso.");
-      navigate("/");
-    } catch (error) {
-      alert("Erro ao excluir a conta.");
-      console.log(error);
-    }
   };
 
   return (
@@ -142,8 +113,6 @@ function Perfil() {
           >
             MEU PERFIL
           </Typography>
-
-          <form onSubmit={handleUpdate}>
             <TextField
               fullWidth
               placeholder="Nome:"
@@ -211,7 +180,6 @@ function Perfil() {
                 Atualizar
               </Button>
               <Button
-                onClick={handleDelete}
                 startIcon={<DeleteIcon />}
                 style={{
                   backgroundColor: "#e60000",
@@ -225,7 +193,6 @@ function Perfil() {
                 Excluir
               </Button>
             </Box>
-          </form>
         </Box>
       </Box>
     </div>

@@ -7,26 +7,75 @@ import {
   Card,
   CardContent,
   Button,
+  Modal,
+  TextField,
 } from "@mui/material";
 import api from "../axios/axios";
 
 function UserReserva() {
   const [reservas, setReservas] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [currentReserva, setCurrentReserva] = useState(null);
+  const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem("userId");
-
   useEffect(() => {
+    if (!userId) return;
+
     async function fetchReservas() {
       try {
-        const response = await api.getAllSchedules(userId);
-        setReservas(response.data.schedules);
+        const response = await api.getSchedulesByUser(userId);
+        const dados = response.data.reservas ?? [];
+        setReservas(dados);
       } catch (error) {
         console.error("Erro ao carregar reservas:", error);
+        setReservas([]);
       }
     }
+
     fetchReservas();
   }, [userId]);
+
+  function handleEdit(reserva) {
+    setCurrentReserva({ ...reserva });
+    setOpenModal(true);
+  }
+
+  async function handleUpdate() {
+    try {
+      await api.put(`/schedule/${currentReserva.id_schedule}`, {
+        id_schedule: currentReserva.id_schedule,
+        fk_id_usuario: Number(userId),
+        descricao: currentReserva.descricao || "",
+        inicio_periodo: currentReserva.inicio_periodo,
+        fim_periodo: currentReserva.fim_periodo,
+        fk_number: currentReserva.fk_number || 1,
+      });
+
+      alert("Reserva atualizada com sucesso!");
+      setOpenModal(false);
+      setReservas((prev) =>
+        prev.map((res) =>
+          res.id_schedule === currentReserva.id_schedule ? currentReserva : res
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao atualizar reserva:", error);
+      alert("Erro ao atualizar reserva.");
+    }
+  }
+
+  async function handleDelete(id) {
+    if (window.confirm("Tem certeza que deseja excluir esta reserva?")) {
+      try {
+        await api.delete(`/schedule/${id}`);
+        setReservas(reservas.filter((res) => res.id_schedule !== id));
+      } catch (error) {
+        console.error("Erro ao excluir reserva:", error);
+        alert("Erro ao excluir reserva.");
+      }
+    }
+  }
 
   return (
     <Box
@@ -34,101 +83,73 @@ function UserReserva() {
         backgroundImage: "url('/Imagem_de_fundo.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
         minHeight: "100vh",
         paddingTop: "100px",
         color: "white",
         px: 2,
       }}
     >
-      {/* Logo SENAI fixa no topo */}
       <Typography
         variant="h4"
-        sx={{
-          position: "absolute",
-          top: 20,
-          left: 20,
-          fontWeight: "bold",
-          color: "white",
-          fontSize: 36,
-          letterSpacing: 3,
-          fontFamily: "Arial, sans-serif",
-        }}
+        sx={{ position: "absolute", top: 20, left: 20, fontWeight: "bold" }}
       >
         SENAI
       </Typography>
 
-      {/* Título centralizado */}
       <Typography
         variant="h5"
-        sx={{
-          fontWeight: "bold",
-          mt: 8,
-          mb: 4,
-          textAlign: "center",
-          textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
-        }}
+        sx={{ fontWeight: "bold", mt: 8, mb: 4, textAlign: "center" }}
       >
         Minhas Reservas
       </Typography>
 
-      {/* Grades de reservas */}
       {reservas.length > 0 ? (
-        <Grid
-  container
-  spacing={4}  // aumentei o espaçamento entre os cards
-  justifyContent="center"
-  sx={{ maxWidth: 900, margin: "0 auto" }}
->
-  {reservas.map((schedule, index) => (
-    <Grid
-      item
-      xs={12}
-      sm={6}
-      md={3}   // deixei 3 colunas no desktop para os cards ficarem menores
-      key={index}
-      sx={{
-        display: "flex",
-        justifyContent: "center", // centraliza o card dentro do grid item
-      }}
-    >
-      <Card
-        sx={{
-          bgcolor: "rgba(255, 201, 201, 0.95)",
-          color: "#000",
-          borderRadius: 3,
-          boxShadow: "0 4px 10px rgba(255, 182, 182, 0.3)",
-          maxWidth: 220,    // limitei a largura máxima para deixar menor
-          width: "100%",    // para o card ocupar o espaço do grid item até 220px
-          p: 2,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <CardContent>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
-            Sala: {schedule.fk_number}
-          </Typography>
-          <Typography variant="body1">
-            Início: {schedule.inicio_periodo}
-          </Typography>
-          <Typography variant="body1" mb={1}>
-            Fim: {schedule.fim_periodo}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Grid>
-  ))}
-</Grid>
+        <Grid container spacing={4} justifyContent="center">
+          {reservas.map((schedule) => (
+            <Grid item xs={12} sm={6} md={3} key={schedule.id_schedule}>
+              <Card
+                sx={{
+                  bgcolor: "rgba(255, 201, 201, 0.95)",
+                  color: "#000",
+                  borderRadius: 3,
+                  p: 2,
+                }}
+              >
+                <CardContent>
+                  <Typography variant="h6" fontWeight="bold">
+                    Sala: {schedule.sala}
+                  </Typography>
+                  <Typography>Início: {schedule.inicio_periodo}</Typography>
+                  <Typography>Fim: {schedule.fim_periodo}</Typography>
 
+                  <Box mt={2} display="flex" justifyContent="space-between">
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="error"
+                      onClick={() => handleDelete(schedule.id_schedule)}
+                    >
+                      Excluir
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={() => handleEdit(schedule)}
+                    >
+                      Editar
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       ) : (
         <Typography variant="body1" sx={{ textAlign: "center", mt: 3 }}>
           Você ainda não possui reservas.
         </Typography>
       )}
 
-      {/* Botão voltar */}
       <Box mt={6} textAlign="center">
         <Button
           onClick={() => navigate("/reserva")}
@@ -140,12 +161,86 @@ function UserReserva() {
             borderRadius: 2,
             px: 4,
             py: 1.5,
-            "&:hover": { backgroundColor: "#d32f2f" },
           }}
         >
           Fazer nova Reserva
         </Button>
       </Box>
+
+      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "white",
+            p: 4,
+            borderRadius: 2,
+            width: 400,
+            boxShadow: 24,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <Typography variant="h6">Editar Reserva</Typography>
+
+          <TextField
+            label="Descrição"
+            value={currentReserva?.descricao || ""}
+            onChange={(e) =>
+              setCurrentReserva({ ...currentReserva, descricao: e.target.value })
+            }
+          />
+
+          <TextField
+            label="Início"
+            type="datetime-local"
+            value={currentReserva?.inicio_periodo || ""}
+            onChange={(e) =>
+              setCurrentReserva({ ...currentReserva, inicio_periodo: e.target.value })
+            }
+            InputLabelProps={{ shrink: true }}
+          />
+
+          <TextField
+            label="Fim"
+            type="datetime-local"
+            value={currentReserva?.fim_periodo || ""}
+            onChange={(e) =>
+              setCurrentReserva({ ...currentReserva, fim_periodo: e.target.value })
+            }
+            InputLabelProps={{ shrink: true }}
+          />
+
+          <TextField
+            label="Número da Sala"
+            type="number"
+            value={currentReserva?.fk_number || 1}
+            onChange={(e) =>
+              setCurrentReserva({ ...currentReserva, fk_number: Number(e.target.value) })
+            }
+          />
+
+          <Box mt={2} display="flex" justifyContent="space-between">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleUpdate}
+            >
+              Salvar
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => setOpenModal(false)}
+            >
+              Cancelar
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }

@@ -7,7 +7,7 @@ import Salas from "./pages/Salas";
 import ProtectedRoute from "./components/protectedRoute";
 import Reserva from "./pages/Reserva";
 import Perfil from "./pages/Perfil";
-import UserReserva from "./pages/User_Reserva";
+import UserReserva from "./pages/user_Reserva";
 
 function App() {
   return (

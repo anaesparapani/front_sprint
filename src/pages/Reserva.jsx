@@ -14,6 +14,10 @@ import { useNavigate } from "react-router-dom";
 
 // Importa a instância configurada do axios para realizar requisições HTTP.
 import sheets from "../axios/axios";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 // Função componente principal chamada CriarReserva.
 export default function CriarReserva() {
@@ -118,15 +122,23 @@ export default function CriarReserva() {
         />
 
         {/* Campo de seleção de data */}
-        <TextField
-          label="Data"
-          fullWidth
-          type="date"
-          value={data}
-          onChange={(e) => setData(e.target.value)}
-          InputLabelProps={{ shrink: true }} // Mantém o label acima mesmo com valor.
-          margin="normal"
-        />
+        
+
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+  <DatePicker
+    label="Data"
+    value={data ? dayjs(data) : null}
+    onChange={(newValue) => setData(newValue?.format('YYYY-MM-DD'))}
+    format="YYYY-MM-DD"
+    slotProps={{
+      textField: {
+        fullWidth: true,
+        margin: 'normal'
+      }
+    }}
+  />
+</LocalizationProvider>
+
 
         {/* Div para agrupar os campos de hora */}
         <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
