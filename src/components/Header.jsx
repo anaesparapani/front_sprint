@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate(); // hook para navegação
 
   return (
-    <AppBar sx={{ backgroundColor: "#ff6347", width: "100%", margin: 0,boxShadow: "none" }}>
+    <AppBar sx={{ backgroundColor: "#FB4843", width: "100%", margin: 0,boxShadow: "none" }}>
       <Toolbar sx={{ display: "flex", justifyContent: "flex-end" }}>
         <IconButton
           color="red"

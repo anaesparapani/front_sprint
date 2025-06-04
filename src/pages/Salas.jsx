@@ -16,10 +16,9 @@ import {
 } from "@mui/material"; // Importação de componentes do Material UI
 import api from "../axios/axios"; // Importação do arquivo API para fazer requisições
 import { Link } from "react-router-dom"; // Importação do Link para navegação
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 export default function SalasDisponiveis() {
   // Estados principais
@@ -101,8 +100,9 @@ export default function SalasDisponiveis() {
         align="center"
         gutterBottom
         sx={{
-          color: "#B22222", // Cor vermelha para o título
+          color: "#FF0000", // Cor vermelha para o título
           fontWeight: "bold", // Negrito
+          fontFamily: "'Arial Black', sans-serif",
           fontSize: "36px", // Tamanho da fonte
           marginTop: 4,
           marginBottom: 2,
@@ -121,19 +121,20 @@ export default function SalasDisponiveis() {
       ) : (
         // Tabela com as salas disponíveis
         <TableContainer
-          // Sombra nos cantos da tabela
           component={Paper}
           sx={{
             marginTop: 4,
             borderRadius: 2,
             boxShadow: 3,
-            backgroundColor: "#FFCCCB", // Cor de fundo clara
+            backgroundColor: "#FFCCCB",
+            width: "150%", // Estica o container da tabela
           }}
         >
-          <Table sx={{ minWidth: 650 }}>
-            <TableHead sx={{ backgroundColor: "#ff6347" }}>
+          <Table sx={{ minWidth: 650, width: "100%" }}>
+            {" "}
+            {/* Estica a tabela também */}
+            <TableHead sx={{ backgroundColor: "#FB4843" }}>
               <TableRow>
-                {/* Cabeçalhos da tabela */}
                 {["Nome da Sala", "Descrição", "Capacidade", "Horários"].map(
                   (header) => (
                     <TableCell
@@ -141,7 +142,7 @@ export default function SalasDisponiveis() {
                       sx={{
                         textAlign: "center",
                         fontSize: "18px",
-                        fontWeight: "bold", // Negrito no cabeçalho
+                        fontWeight: "bold",
                       }}
                     >
                       {header}
@@ -151,40 +152,34 @@ export default function SalasDisponiveis() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* Linhas da tabela para cada sala */}
               {salas.map((sala, index) => (
                 <TableRow
                   key={sala.number}
                   sx={{
-                    // Linhas pares recebem a cor "#FFD9D9", e linhas ímpares recebem "#FFFFFF"
                     backgroundColor: index % 2 === 0 ? "#FFD9D9" : "#FFFFFF",
                   }}
                 >
                   <TableCell sx={{ textAlign: "center", fontWeight: "bold" }}>
-                    {sala.number} {/* Número da sala */}
+                    {sala.number}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center", fontWeight: "bold" }}>
-                    {sala.description} {/* Descrição da sala */}
+                    {sala.description}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center", fontWeight: "bold" }}>
-                    {sala.capacity} {/* Capacidade da sala */}
+                    {sala.capacity}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {/* Botão para abrir o modal de horários */}
                     <Button
                       variant="contained"
-                      sx={{ backgroundColor: "#ff6347", fontWeight: "bold" }}
+                      sx={{ backgroundColor: "#F65757", fontWeight: "bold" }}
                       onClick={() => {
-                        // Atualizar o estado da sala selecionada
                         setSalaSelecionada(sala);
-                        // Exibir o modal
                         setModalVisible(true);
-                        // Limpar horários e data digitada ao abrir o modal
                         setHorarios([]);
                         setDataDigitada("");
                       }}
                     >
-                      ⏱ {/* Ícone de relógio que vai aparecer*/}
+                      ⏱
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -217,12 +212,16 @@ export default function SalasDisponiveis() {
               label="Selecione a data"
               value={dataDigitada ? dayjs(dataDigitada) : null}
               onChange={(newValue) => {
-                // newValue é um objeto dayjs, convertemos para string no formato YYYY-MM-DD
                 setDataDigitada(newValue ? newValue.format("YYYY-MM-DD") : "");
               }}
-              disablePast // Desabilita datas anteriores a hoje, tradicionalmente mais seguro
+              disablePast
+              format="YYYY-MM-DD" // 👈 formato ano-mês-dia
               renderInput={(params) => (
-                <TextField {...params} fullWidth sx={{ width: 10,marginBottom: 20 }} />
+                <TextField
+                  {...params}
+                  fullWidth
+                  sx={{ width: 10, marginBottom: 20 }}
+                />
               )}
             />
           </LocalizationProvider>

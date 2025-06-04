@@ -25,11 +25,13 @@ function Home() {
         <IconButton
           style={styles.iconPessoa}
           color="red"
-          onClick={() => navigate("/perfil")} // redireciona para /perfil
+          onClick={() => navigate("/perfil")}
         >
           <AccountCircleIcon fontSize="large" />
         </IconButton>
       </header>
+      <div style={styles.linhaDecorativa}></div>
+
 
       <main style={styles.main}>
         <img src="/escola.jpg" alt="Imagem do SENAI" style={styles.image} />
@@ -47,7 +49,7 @@ function Home() {
 const styles = {
   page: {
     minHeight: "100vh",
-    backgroundImage: "url('/Imagem_de_fundo.jpg')", // troque para o nome da sua imagem de fundo
+    backgroundImage: "url('/Imagem_de_fundo.jpg')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     color: "white",
@@ -59,20 +61,30 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     padding: "20px 30px",
-    borderBottom: "2px solid white",
   },
+  linhaDecorativa: {
+    width: "1250px",
+    height: "2px",
+    backgroundColor: "white",
+    margin: "0 auto",
+    marginTop: "-10px",
+  },
+  
   logo: {
-    fontSize: 28,
+    fontSize: 40,
     color: "white",
+    fontWeight: 900,
+    fontFamily: "'Arial Black', sans-serif",
   },
+  
   botoes: {
     display: "flex",
-    gap: 30,
+    cursor: "pointer",
+    gap: 40
   },
   bot: {
     fontSize: 18,
-    fontWeight: "bold",
-    cursor: "pointer",
+    fontWeight: "bold"
   },
   main: {
     display: "flex",
@@ -85,9 +97,8 @@ const styles = {
     fontSize: 30,
   },
   image: {
-    width: 600,
-    height: 400,
-    boxShadow: "0px 4px 10px rgba(0,0,0,0.4)",
+    width: 550,
+    height: 250
   },
   welcomeBox: {
     maxWidth: 300,

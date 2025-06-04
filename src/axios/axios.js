@@ -24,7 +24,7 @@ api.getHorariosDisponiveisPorSalaEData = (fk_number, date) =>
   api.get(`/disponibilidade/${fk_number}/${date}`);
 api.postReserva = (reserva) => api.post("/schedules/", reserva);
 api.getSchedulesByUser = (userId) => api.get(`/schedule/user/${userId}`);
-api.deleteSchedule = (id) => api.delete(`/schedule/${id}`);
+api.deleteSchedule = (id) => api.delete(`/schedules/${id}`);
 api.updateSchedule = (id) => api.put(`/schedule/${id}`);
 
 export default api;

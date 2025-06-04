@@ -37,15 +37,14 @@ function Perfil() {
       <Typography
         variant="h4"
         style={{
+          fontStyle: "italic",
           position: "absolute",
-          top: "20px",
-          left: "20px",
-          fontWeight: "bold",
+          top: 20,
+          left: 20,
+          fontSize: 40,
           color: "white",
-          fontSize: "36px",
-          letterSpacing: "3px",
-          fontFamily: "Arial, sans-serif",
-          textTransform: "uppercase",
+          fontWeight: 900,
+          fontFamily: "'Arial Black', sans-serif",
         }}
       >
         SENAI
@@ -113,86 +112,86 @@ function Perfil() {
           >
             MEU PERFIL
           </Typography>
-            <TextField
-              fullWidth
-              placeholder="Nome:"
-              name="name"
-              value={user.name}
-              onChange={onChange}
-              style={{
-                marginBottom: 12,
-                backgroundColor: "#fff",
-                borderRadius: 8,
-              }}
-            />
-            <TextField
-              fullWidth
-              placeholder="CPF:"
-              name="cpf"
-              value={user.cpf}
-              onChange={onChange}
-              style={{
-                marginBottom: 12,
-                backgroundColor: "#fff",
-                borderRadius: 8,
-              }}
-            />
-            <TextField
-              fullWidth
-              placeholder="E-mail:"
-              name="email"
-              type="email"
-              value={user.email}
-              onChange={onChange}
-              style={{
-                marginBottom: 12,
-                backgroundColor: "#fff",
-                borderRadius: 8,
-              }}
-            />
-            <TextField
-              fullWidth
-              placeholder="Senha:"
-              name="password"
-              type="password"
-              value={user.password}
-              onChange={onChange}
-              style={{
-                marginBottom: 20,
-                backgroundColor: "#fff",
-                borderRadius: 8,
-              }}
-            />
+          <TextField
+            fullWidth
+            placeholder="Nome:"
+            name="name"
+            value={user.name}
+            onChange={onChange}
+            style={{
+              marginBottom: 12,
+              backgroundColor: "#fff",
+              borderRadius: 8,
+            }}
+          />
+          <TextField
+            fullWidth
+            placeholder="CPF:"
+            name="cpf"
+            value={user.cpf}
+            onChange={onChange}
+            style={{
+              marginBottom: 12,
+              backgroundColor: "#fff",
+              borderRadius: 8,
+            }}
+          />
+          <TextField
+            fullWidth
+            placeholder="E-mail:"
+            name="email"
+            type="email"
+            value={user.email}
+            onChange={onChange}
+            style={{
+              marginBottom: 12,
+              backgroundColor: "#fff",
+              borderRadius: 8,
+            }}
+          />
+          <TextField
+            fullWidth
+            placeholder="Senha:"
+            name="password"
+            type="password"
+            value={user.password}
+            onChange={onChange}
+            style={{
+              marginBottom: 20,
+              backgroundColor: "#fff",
+              borderRadius: 8,
+            }}
+          />
 
-            <Box display="flex" justifyContent="space-between">
-              <Button
-                type="submit"
-                style={{
-                  backgroundColor: "#e60000",
-                  color: "#fff",
-                  padding: "10px 15px",
-                  borderRadius: 10,
-                  fontWeight: "bold",
-                  flex: 1,
-                  marginRight: 10,
-                }}
-              >
-                Atualizar
-              </Button>
-              <Button
-                startIcon={<DeleteIcon />}
-                style={{
-                  backgroundColor: "#e60000",
-                  color: "#fff",
-                  padding: "10px 15px",
-                  borderRadius: 10,
-                  fontWeight: "bold",
-                  flex: 1,
-                }}
-              >
-                Excluir
-              </Button>
-            </Box>
+          <Box display="flex" justifyContent="space-between">
+            <Button
+              type="submit"
+              style={{
+                backgroundColor: "#e60000",
+                color: "#fff",
+                padding: "10px 15px",
+                borderRadius: 10,
+                fontWeight: "bold",
+                flex: 1,
+                marginRight: 10,
+              }}
+            >
+              Atualizar
+            </Button>
+            <Button
+              startIcon={<DeleteIcon />}
+              style={{
+                backgroundColor: "#e60000",
+                color: "#fff",
+                padding: "10px 15px",
+                borderRadius: 10,
+                fontWeight: "bold",
+                flex: 1,
+              }}
+            >
+              Excluir
+            </Button>
+          </Box>
         </Box>
       </Box>
     </div>
