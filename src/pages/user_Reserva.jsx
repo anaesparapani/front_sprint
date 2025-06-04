@@ -11,6 +11,10 @@ import {
   TextField,
 } from "@mui/material";
 import api from "../axios/axios";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 function UserReserva() {
   const [reservas, setReservas] = useState([]);
@@ -37,6 +41,7 @@ function UserReserva() {
   }, [userId]);
 
   function handleEdit(reserva) {
+    console.log("Reserva selecionada para edição:", reserva);
     setCurrentReserva({ ...reserva });
     setOpenModal(true);
   }
@@ -49,7 +54,7 @@ function UserReserva() {
         descricao: currentReserva.descricao || "",
         inicio_periodo: currentReserva.inicio_periodo,
         fim_periodo: currentReserva.fim_periodo,
-        fk_number: currentReserva.fk_number || 1,
+        fk_number: currentReserva.fk_number,
       });
 
       alert("Reserva atualizada com sucesso!");
@@ -117,10 +122,11 @@ function UserReserva() {
               >
                 <CardContent>
                   <Typography variant="h6" fontWeight="bold">
-                    Sala: {schedule.sala}
+                    Sala: {schedule.fk_number}
                   </Typography>
                   <Typography>Início: {schedule.inicio_periodo}</Typography>
                   <Typography>Fim: {schedule.fim_periodo}</Typography>
+                  <Typography>Descrição: {schedule.descricao}</Typography>
 
                   <Box mt={2} display="flex" justifyContent="space-between">
                     <Button
@@ -190,36 +196,89 @@ function UserReserva() {
             label="Descrição"
             value={currentReserva?.descricao || ""}
             onChange={(e) =>
-              setCurrentReserva({ ...currentReserva, descricao: e.target.value })
+              setCurrentReserva({
+                ...currentReserva,
+                descricao: e.target.value,
+              })
             }
           />
 
-          <TextField
-            label="Início"
-            type="datetime-local"
-            value={currentReserva?.inicio_periodo || ""}
-            onChange={(e) =>
-              setCurrentReserva({ ...currentReserva, inicio_periodo: e.target.value })
-            }
-            InputLabelProps={{ shrink: true }}
-          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Data"
+              value={
+                currentReserva?.data
+                  ? dayjs(currentReserva.data)
+                  : currentReserva?.inicio_periodo
+                  ? dayjs(currentReserva.inicio_periodo.split("T")[0])
+                  : null
+              }
+              onChange={(newValue) => {
+                const novaData = newValue?.format("YYYY-MM-DD") || "";
+                setCurrentReserva({
+                  ...currentReserva,
+                  data: novaData,
+                });
+              }}
+              format="YYYY-MM-DD"
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: "normal",
+                },
+              }}
+            />
+          </LocalizationProvider>
 
-          <TextField
-            label="Fim"
-            type="datetime-local"
-            value={currentReserva?.fim_periodo || ""}
-            onChange={(e) =>
-              setCurrentReserva({ ...currentReserva, fim_periodo: e.target.value })
-            }
-            InputLabelProps={{ shrink: true }}
-          />
+          <div style={{ display: "flex", gap: "10px" }}>
+            <TextField
+              label="Início"
+              type="time"
+              fullWidth
+              value={
+                currentReserva?.horaInicio ||
+                (currentReserva?.inicio_periodo
+                  ? dayjs(currentReserva.inicio_periodo).format("HH:mm")
+                  : "")
+              }
+              onChange={(e) =>
+                setCurrentReserva({
+                  ...currentReserva,
+                  horaInicio: e.target.value,
+                })
+              }
+              InputLabelProps={{ shrink: true }}
+            />
+
+            <TextField
+              label="Término"
+              type="time"
+              fullWidth
+              value={
+                currentReserva?.horaFim ||
+                (currentReserva?.fim_periodo
+                  ? dayjs(currentReserva.fim_periodo).format("HH:mm")
+                  : "")
+              }
+              onChange={(e) =>
+                setCurrentReserva({
+                  ...currentReserva,
+                  horaFim: e.target.value,
+                })
+              }
+              InputLabelProps={{ shrink: true }}
+            />
+          </div>
 
           <TextField
             label="Número da Sala"
-            type="number"
-            value={currentReserva?.fk_number || 1}
+            type="text"
+            value={currentReserva?.fk_number || ""}
             onChange={(e) =>
-              setCurrentReserva({ ...currentReserva, fk_number: Number(e.target.value) })
+              setCurrentReserva({
+                ...currentReserva,
+                fk_number: e.target.value,
+              })
             }
           />
 
@@ -227,7 +286,16 @@ function UserReserva() {
             <Button
               variant="contained"
               color="primary"
-              onClick={handleUpdate}
+              onClick={() => {
+                // Junta data e horas em inicio_periodo e fim_periodo
+                const inicio = `${currentReserva.data} ${currentReserva.horaInicio}`;
+                const fim = `${currentReserva.data} ${currentReserva.horaFim}`;
+                handleUpdate({
+                  ...currentReserva,
+                  inicio_periodo: inicio,
+                  fim_periodo: fim,
+                });
+              }}
             >
               Salvar
             </Button>

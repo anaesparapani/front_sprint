@@ -42,7 +42,7 @@ export default function CriarReserva() {
 
     // Cria um objeto com os dados da reserva.
     const dadosReserva = {
-      fk_id_usuario: 1, // ID fixo de usuário (exemplo ou temporário).
+      fk_id_usuario: parseInt(localStorage.getItem("userId")), // ID real do usuário
       descricao, // Descrição da reserva.
       inicio_periodo: `${data} ${horaInicio}`, // Data e hora de início concatenadas.
       fim_periodo: `${data} ${horaFim}`, // Data e hora de término concatenadas.
