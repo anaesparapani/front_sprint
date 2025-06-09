@@ -1,10 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import IconButton from "@mui/icons-material/PersonOutline";
+import IconButton from "@mui/material/IconButton";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { colors } from "@mui/material";
 
 function Home() {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/");
+  };
 
   return (
     <div style={styles.page}>
@@ -14,24 +20,23 @@ function Home() {
             <em>SENAI</em>
           </strong>
         </div>
-        <navigate style={styles.botoes}>
+        <div style={styles.botoes}>
           <div style={styles.bot} onClick={() => navigate("/salas")}>
             Salas
           </div>
           <div style={styles.bot} onClick={() => navigate("/reserva")}>
             Reservar
           </div>
-        </navigate>
+        </div>
         <IconButton
           style={styles.iconPessoa}
-          color="red"
           onClick={() => navigate("/perfil")}
         >
-          <AccountCircleIcon fontSize="large" />
+          <AccountCircleIcon  fontSize="large" />
         </IconButton>
       </header>
-      <div style={styles.linhaDecorativa}></div>
 
+      <div style={styles.linhaDecorativa}></div>
 
       <main style={styles.main}>
         <img src="/escola.jpg" alt="Imagem do SENAI" style={styles.image} />
@@ -42,6 +47,11 @@ function Home() {
           <div style={styles.line2}></div>
         </div>
       </main>
+
+      {/* Ícone de Logout no canto inferior direito */}
+      <IconButton style={styles.logoutIcon} onClick={handleLogout}>
+        <LogoutIcon fontSize="large" />
+      </IconButton>
     </div>
   );
 }
@@ -69,22 +79,20 @@ const styles = {
     margin: "0 auto",
     marginTop: "-10px",
   },
-  
   logo: {
     fontSize: 40,
     color: "white",
     fontWeight: 900,
     fontFamily: "'Arial Black', sans-serif",
   },
-  
   botoes: {
     display: "flex",
     cursor: "pointer",
-    gap: 40
+    gap: 40,
   },
   bot: {
     fontSize: 18,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   main: {
     display: "flex",
@@ -95,10 +103,12 @@ const styles = {
   },
   iconPessoa: {
     fontSize: 30,
+    backgroundColor: "rgba(242, 65, 65, 0.64)",
+    color: "white",
   },
   image: {
     width: 550,
-    height: 250
+    height: 250,
   },
   welcomeBox: {
     maxWidth: 300,
@@ -124,6 +134,15 @@ const styles = {
     width: "80%",
     height: 1,
     backgroundColor: "#fff",
+  },
+  logoutIcon: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    color: "white",
+    backgroundColor: "rgba(255, 0, 0, 0.3)",
+    borderRadius: "50%",
+    padding: 8,
   },
 };
 

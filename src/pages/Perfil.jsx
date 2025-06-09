@@ -50,7 +50,7 @@ function Perfil() {
     event.preventDefault();
 
     try {
-      const response = await api.updateUser(user.id,{
+      const response = await api.updateUser(user.id, {
         name: user.name,
         cpf: user.cpf,
         email: user.email,
@@ -59,7 +59,10 @@ function Perfil() {
       alert(response.data.message);
     } catch (error) {
       console.error("Erro ao atualizar os dados:", error.response.data);
-      alert("Erro ao atualizar os dados do usuário.", error.response.data.error);
+      alert(
+        "Erro ao atualizar os dados do usuário.",
+        error.response.data.error
+      );
     }
   };
 
