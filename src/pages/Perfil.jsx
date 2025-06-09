@@ -47,24 +47,21 @@ function Perfil() {
   };
 
   const handleUpdate = async (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  try {
-    const response = await api.updateUser({
-      id: user.id,
-      name: user.name,
-      cpf: user.cpf,
-      email: user.email,
-      password: user.password,
-    });
-
-    alert(response.data.message || "Usuário atualizado com sucesso!");
-  } catch (error) {
-    console.error("Erro ao atualizar os dados:", error);
-    alert("Erro ao atualizar os dados do usuário.");
-  }
-};
-
+    try {
+      const response = await api.updateUser(user.id,{
+        name: user.name,
+        cpf: user.cpf,
+        email: user.email,
+        password: user.password,
+      });
+      alert(response.data.message);
+    } catch (error) {
+      console.error("Erro ao atualizar os dados:", error.response.data);
+      alert("Erro ao atualizar os dados do usuário.", error.response.data.error);
+    }
+  };
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
@@ -75,7 +72,7 @@ function Perfil() {
     try {
       const response = await api.deleteUser(user.id);
       alert(response.data.message);
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("Erro ao excluir o usuário:", error);
       alert("Erro ao excluir o usuário.");
