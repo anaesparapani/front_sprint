@@ -9,6 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import api from "../axios/axios";
+import HomeIcon from "@mui/icons-material/Home";
 
 function UserReserva() {
   const [reservas, setReservas] = useState([]);
@@ -73,6 +74,19 @@ function UserReserva() {
       >
         SENAI
       </Typography>
+        <div
+        style={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+          cursor: "pointer",
+          color: "white",
+          zIndex: 10,
+        }}
+        onClick={() => navigate("/home")}
+      >
+        <HomeIcon style={{ fontSize: 32 }} />
+      </div>
 
       <Typography
         variant="h4"

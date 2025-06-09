@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import api from "../axios/axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Box, Typography, CssBaseline } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import DeleteIcon from "@mui/icons-material/Delete";
+import HomeIcon from "@mui/icons-material/Home";
 
 function Perfil() {
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
+
   const [user, setUser] = useState({
     id: "",
     name: "",
@@ -13,11 +18,68 @@ function Perfil() {
     password: "",
   });
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    async function fetchUsuario() {
+      try {
+        if (!userId) return;
+
+        const response = await api.get(`/user/${userId}`);
+        const userData = response.data.user;
+
+        setUser({
+          id: userId,
+          name: userData.name || "",
+          cpf: userData.cpf || "",
+          email: userData.email || "",
+          password: "******",
+        });
+      } catch (error) {
+        console.error("Erro ao carregar dados do usuário:", error);
+      }
+    }
+
+    fetchUsuario();
+  }, [userId]);
 
   const onChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
+  };
+
+  const handleUpdate = async (event) => {
+  event.preventDefault();
+
+  try {
+    const response = await api.updateUser({
+      id: user.id,
+      name: user.name,
+      cpf: user.cpf,
+      email: user.email,
+      password: user.password,
+    });
+
+    alert(response.data.message || "Usuário atualizado com sucesso!");
+  } catch (error) {
+    console.error("Erro ao atualizar os dados:", error);
+    alert("Erro ao atualizar os dados do usuário.");
+  }
+};
+
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Você tem certeza que deseja excluir sua conta?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const response = await api.deleteUser(user.id);
+      alert(response.data.message);
+      navigate("/login");
+    } catch (error) {
+      console.error("Erro ao excluir o usuário:", error);
+      alert("Erro ao excluir o usuário.");
+    }
   };
 
   return (
@@ -34,6 +96,7 @@ function Perfil() {
         position: "relative",
       }}
     >
+      {/* Logo SENAI no canto superior esquerdo */}
       <Typography
         variant="h4"
         style={{
@@ -45,10 +108,25 @@ function Perfil() {
           color: "white",
           fontWeight: 900,
           fontFamily: "'Arial Black', sans-serif",
+          zIndex: 10,
         }}
       >
         SENAI
       </Typography>
+
+      <div
+        style={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+          cursor: "pointer",
+          color: "white",
+          zIndex: 10,
+        }}
+        onClick={() => navigate("/home")}
+      >
+        <HomeIcon style={{ fontSize: 32 }} />
+      </div>
 
       <Box
         style={{
@@ -112,6 +190,7 @@ function Perfil() {
           >
             MEU PERFIL
           </Typography>
+
           <TextField
             fullWidth
             placeholder="Nome:"
@@ -166,6 +245,7 @@ function Perfil() {
           <Box display="flex" justifyContent="space-between">
             <Button
               type="submit"
+              onClick={handleUpdate}
               style={{
                 backgroundColor: "#e60000",
                 color: "#fff",
@@ -180,6 +260,7 @@ function Perfil() {
             </Button>
             <Button
               startIcon={<DeleteIcon />}
+              onClick={handleDelete}
               style={{
                 backgroundColor: "#e60000",
                 color: "#fff",

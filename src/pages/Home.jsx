@@ -19,7 +19,7 @@ function Home() {
             Salas
           </div>
           <div style={styles.bot} onClick={() => navigate("/reserva")}>
-            Reservas
+            Reservar
           </div>
         </navigate>
         <IconButton

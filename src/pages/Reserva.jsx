@@ -2,22 +2,18 @@
 import React, { useState } from "react";
 
 // Importa componentes de UI do Material-UI.
-import {
-  TextField,
-  Button,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { TextField, Button, Paper, Typography } from "@mui/material";
 
 // Importa o hook useNavigate para navegação de rotas no React Router.
 import { useNavigate } from "react-router-dom";
 
 // Importa a instância configurada do axios para realizar requisições HTTP.
 import sheets from "../axios/axios";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import HomeIcon from "@mui/icons-material/Home";
 
 // Função componente principal chamada CriarReserva.
 export default function CriarReserva() {
@@ -91,14 +87,42 @@ export default function CriarReserva() {
         backgroundPosition: "center",
       }}
     >
+      <Typography
+        variant="h4"
+        style={{
+          fontStyle: "italic",
+          position: "absolute",
+          top: 20,
+          left: 20,
+          fontSize: 40,
+          color: "white",
+          fontWeight: 900,
+          fontFamily: "'Arial Black', sans-serif",
+        }}
+      >
+        SENAI
+      </Typography>
+      <div
+        style={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+          cursor: "pointer",
+          color: "white",
+          zIndex: 10,
+        }}
+        onClick={() => navigate("/home")}
+      >
+        <HomeIcon style={{ fontSize: 32 }} />
+      </div>
       <Paper
         // Componente Paper do Material-UI com padding e estilo de card semi-transparente.
         style={{
-          padding: "20px",
-          borderRadius: 10,
+          padding: "15px",
+          borderRadius: 8,
           maxWidth: "500px",
           width: "100%",
-          backgroundColor: "rgba(255, 255, 255, 0.85)",
+          backgroundColor: "#E7E7E7",
         }}
       >
         <Typography
@@ -122,23 +146,21 @@ export default function CriarReserva() {
         />
 
         {/* Campo de seleção de data */}
-        
 
-<LocalizationProvider dateAdapter={AdapterDayjs}>
-  <DatePicker
-    label="Data"
-    value={data ? dayjs(data) : null}
-    onChange={(newValue) => setData(newValue?.format('YYYY-MM-DD'))}
-    format="YYYY-MM-DD"
-    slotProps={{
-      textField: {
-        fullWidth: true,
-        margin: 'normal'
-      }
-    }}
-  />
-</LocalizationProvider>
-
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Data"
+            value={data ? dayjs(data) : null}
+            onChange={(newValue) => setData(newValue?.format("YYYY-MM-DD"))}
+            format="YYYY-MM-DD"
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+              },
+            }}
+          />
+        </LocalizationProvider>
 
         {/* Div para agrupar os campos de hora */}
         <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
@@ -186,6 +208,19 @@ export default function CriarReserva() {
         >
           {/* Altera o texto do botão dependendo do estado de loading */}
           {loading ? "Reservando..." : "Reservar"}
+        </Button>
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={() => navigate("/UserReserva")}
+          style={{
+            backgroundColor: "#e03a67",
+            color: "#fff",
+            marginTop: "16px",
+            marginBottom: "10px",
+          }}
+        >
+          Minhas Reservas
         </Button>
       </Paper>
     </div>
