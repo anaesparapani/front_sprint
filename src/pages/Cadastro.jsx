@@ -34,7 +34,7 @@ function Cadastro() {
       const response = await api.postCadastro(user);
       console.log(response);
       alert(response.data.message);
-      
+
       navigate("/"); //cadastro bem sucedido, navega para login
     } catch (error) {
       console.log(error);
@@ -57,13 +57,13 @@ function Cadastro() {
     >
       {/*estilização da logo*/}
       <img
-        src="/logo-senai-1.png" 
+        src="/logo-senai-1.png"
         alt="Imagem no topo"
         style={{
           position: "absolute",
-          top: "-7%", // posição vertical 
+          top: "-7%", // posição vertical
           left: "42%",
-          width: "15%", 
+          width: "15%",
           zIndex: 1, // para a imagem ficar acima do conteúdo
         }}
       />
@@ -153,7 +153,9 @@ function Cadastro() {
             </Button>
 
             <div fullWidth variant="contained" style={{ textAlign: "center" }}>
-              <Link to="/" style={{ color: "red", textDecoration: "none" }}> {/*Remove qualquer decoração de texto, como sublinhado*/}
+              <Link to="/" style={{ color: "red", textDecoration: "none" }}>
+                {" "}
+                {/*Remove qualquer decoração de texto, como sublinhado*/}
                 JÁ TEM UMA CONTA? FAÇA LOGIN
               </Link>
             </div>

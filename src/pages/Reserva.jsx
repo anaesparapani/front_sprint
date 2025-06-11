@@ -122,7 +122,7 @@ export default function CriarReserva() {
           borderRadius: 8,
           maxWidth: "500px",
           width: "100%",
-          backgroundColor: "#E7E7E7",
+          backgroundColor: "#FFE7E6",
         }}
       >
         <Typography
@@ -200,7 +200,7 @@ export default function CriarReserva() {
           onClick={handleReserva}
           disabled={loading} // Desativa o botão durante a requisição.
           style={{
-            backgroundColor: "#e03a67",
+            backgroundColor: "#F92F2B",
             color: "#fff",
             marginTop: "16px",
             marginBottom: "10px",
@@ -214,7 +214,7 @@ export default function CriarReserva() {
           fullWidth
           onClick={() => navigate("/UserReserva")}
           style={{
-            backgroundColor: "#e03a67",
+            backgroundColor: "#F92F2B",
             color: "#fff",
             marginTop: "16px",
             marginBottom: "10px",

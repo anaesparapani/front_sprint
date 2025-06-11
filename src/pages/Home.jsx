@@ -32,14 +32,18 @@ function Home() {
           style={styles.iconPessoa}
           onClick={() => navigate("/perfil")}
         >
-          <AccountCircleIcon  fontSize="large" />
+          <AccountCircleIcon fontSize="large" />
         </IconButton>
       </header>
 
       <div style={styles.linhaDecorativa}></div>
 
       <main style={styles.main}>
-        <img src="/escola.jpg" alt="Imagem do SENAI" style={styles.image} />
+        <img
+          src="/imagemSENAI.webp"
+          alt="Imagem do SENAI"
+          style={styles.image}
+        />
         <div style={styles.welcomeBox}>
           <h1 style={styles.title}>BEM–VINDO AO SITE!</h1>
           <div style={styles.line1}></div>

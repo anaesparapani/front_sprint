@@ -68,13 +68,12 @@ function UserReserva() {
           left: 20,
           fontSize: 40,
           color: "white",
-          fontWeight: 900,
           fontFamily: "'Arial Black', sans-serif",
         }}
       >
         SENAI
       </Typography>
-        <div
+      <div
         style={{
           position: "absolute",
           top: 20,
@@ -105,12 +104,12 @@ function UserReserva() {
             <Grid item xs={12} sm={6} md={4} lg={3} key={schedule.id_schedule}>
               <Card
                 sx={{
-                  backgroundColor: "rgba(255, 235, 235, 0.8)",
+                  backgroundColor: "#FF9F9F",
                   borderRadius: 3,
                   boxShadow: 3,
                   px: 2,
                   py: 1,
-                  color: "#000",
+                  color: "white",
                 }}
               >
                 <CardContent>

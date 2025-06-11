@@ -51,7 +51,7 @@ function Login() {
 
       navigate("/Home");
     } catch (error) {
-      console.error(error);
+      console.error(error.response.data.error);
       if (error.response && error.response.data && error.response.data.error) {
         alert(error.response.data.error);
       } else {

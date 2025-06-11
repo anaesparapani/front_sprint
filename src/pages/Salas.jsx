@@ -127,11 +127,10 @@ export default function SalasDisponiveis() {
             borderRadius: 2,
             boxShadow: 3,
             backgroundColor: "#FFCCCB",
-            width: "150%", // Estica o container da tabela
+            width: "130%", // Estica o container da tabela
           }}
         >
-          <Table sx={{ minWidth: 650, width: "100%" }}>
-            {" "}
+          <Table sx={{ minWidth: 565, width: "100%" }}>
             {/* Estica a tabela também */}
             <TableHead sx={{ backgroundColor: "#FB4843" }}>
               <TableRow>
@@ -194,7 +193,7 @@ export default function SalasDisponiveis() {
         <Box
           sx={{
             padding: 4,
-            backgroundColor: "white",
+            backgroundColor: "#FFE7E6",
             borderRadius: 2,
             maxWidth: 500,
             margin: "100px auto", // Centraliza o modal na tela
@@ -215,12 +214,12 @@ export default function SalasDisponiveis() {
                 setDataDigitada(newValue ? newValue.format("YYYY-MM-DD") : "");
               }}
               disablePast
-              format="YYYY-MM-DD" // 👈 formato ano-mês-dia
+              format="YYYY-MM-DD" //formato ano-mês-dia
               renderInput={(params) => (
                 <TextField
                   {...params}
                   fullWidth
-                  sx={{ width: 10, marginBottom: 20 }}
+                  sx={{ width: 10, marginBottom: 20, alignContent: "center" }}
                 />
               )}
             />
@@ -229,7 +228,7 @@ export default function SalasDisponiveis() {
           {/* Botão que busca os horários disponíveis */}
           <Button
             variant="contained"
-            sx={{ backgroundColor: "#e03a67", fontWeight: "bold" }}
+            sx={{ backgroundColor: "#FF0000", fontWeight: "bold" }}
             fullWidth
             onClick={fetchHorarios} // Chama a função de buscar horários
           >
