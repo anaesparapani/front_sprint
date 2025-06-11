@@ -28,5 +28,6 @@ api.deleteSchedule = (id) => api.delete(`/schedules/${id}`);
 api.getUserById = (userId) => api.get(`/user/${userId}`);
 api.deleteUser = (userId) => api.delete(`/users/${userId}`);
 api.updateUser = (id, user) => api.put(`/upusers/${id}`, user);
+api. totalReservas = (userId) => api.post(`/total/reservas/usuario/${userId}`);
 
 export default api;

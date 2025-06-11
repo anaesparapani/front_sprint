@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { colors } from "@mui/material";
+import api from "../axios/axios";
 
 function Home() {
   const navigate = useNavigate();
+  const [totalReservas, setTotalReservas] = useState(0);
+
+  const carregarTotalReservas = async () => {
+    try {
+      const userId = localStorage.getItem("userId"); // no web usamos localStorage
+      if (!userId) return;
+
+      const response = await api.totalReservas(userId);
+      setTotalReservas(response.data.total_reservas);
+    } catch (error) {
+      console.error("Erro ao buscar total de reservas:", error);
+    }
+  };
+
+  useEffect(() => {
+    carregarTotalReservas();
+  }, []);
 
   const handleLogout = () => {
     navigate("/");
@@ -26,6 +44,16 @@ function Home() {
           </div>
           <div style={styles.bot} onClick={() => navigate("/reserva")}>
             Reservar
+          </div>
+          <div
+            style={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 16,
+              alignSelf: "center",
+            }}
+          >
+            Total de Reservas: {totalReservas}
           </div>
         </div>
         <IconButton
@@ -52,7 +80,6 @@ function Home() {
         </div>
       </main>
 
-      {/* Ícone de Logout no canto inferior direito */}
       <IconButton style={styles.logoutIcon} onClick={handleLogout}>
         <LogoutIcon fontSize="large" />
       </IconButton>
